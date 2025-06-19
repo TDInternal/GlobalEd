@@ -153,8 +153,9 @@
                     </ul>
                 </div>
                 
-                <div class="mt-12 text-center">
-                    <button onclick="resetFinder()" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Start Over</button>
+                <div class="mt-12 text-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button onclick="resetFinder()" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">Start Over</button>
+                    <a href="https://www.terradotta.com/request-demo.html" target="_blank" class="w-full sm:w-auto inline-block bg-td-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Let's start the conversation!</a>
                 </div>
             </div>
 
@@ -239,10 +240,10 @@
 
         // Function to create a checkbox item
         function createCheckbox(id, name, value, labelText) {
-            // **CSS FIX**: Use "items-start" to align checkboxes to the top, fixing alignment issues with multi-line labels.
+            // **CSS FIX**: Use "items-start" to align checkboxes to the top. Removed mt-1 for more consistent alignment.
             return `
                 <div class="flex items-start">
-                    <input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue mt-1">
+                    <input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
                     <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>
                 </div>
             `;
