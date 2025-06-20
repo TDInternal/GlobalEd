@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terra Dotta: Solution Finder</title>
     
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Custom Tailwind Config for Brand Colors -->
     <script>
         tailwind.config = {
             theme: {
@@ -84,6 +87,7 @@
     </style>
 </head>
 <body class="text-slate-700">
+    <!-- Header Banner -->
     <header class="bg-td-blue text-white text-center py-12 sm:py-16">
         <div class="max-w-5xl mx-auto px-4">
             <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Find Your Solution</h1>
@@ -94,53 +98,86 @@
     </header>
 
     <main class="max-w-5xl mx-auto p-4 sm:p-8 -mt-20">
-        <div id="solutionFinder" class="bg-white p-6 sm:p-10 rounded-2xl shadow-lg relative min-h-[500px]">
+        <div id="solutionFinder" class="bg-white p-6 sm:p-10 rounded-2xl shadow-lg relative min-h-[550px]">
             
+            <!-- Step 1: Role Selection -->
             <div id="step1" class="wizard-step">
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 1: Your Role</h2>
                 <p class="text-slate-500 mb-8">Please select the role that best describes your position. This will help us tailor the questions for you.</p>
                 <div id="roles" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    <!-- Roles will be populated by JS -->
+                </div>
+                <div class="text-right">
+                    <div id="role-error" class="text-red-500 text-sm mt-4 hidden">Please select a role to continue.</div>
+                    <div class="mt-4">
+                        <button id="next-btn-1" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
                     </div>
-                <div class="mt-10 text-right">
-                    <button onclick="goToStep(2)" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
                 </div>
             </div>
 
+            <!-- Step 2: Current Solutions -->
             <div id="step2" class="wizard-step hidden">
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 2: What You Have</h2>
-                <p class="text-slate-500 mb-8">Select the Terra Dotta solutions you currently use. This will help us suggest what's next.</p>
+                <p class="text-slate-500 mb-8">Select the Terra Dotta solutions your campus or office currently uses. This will help us suggest what's next.</p>
                 <div id="currentSolutions" class="space-y-4">
-                    </div>
+                    <!-- Options will be populated by JS -->
+                </div>
                 <div class="mt-10 flex justify-between">
-                    <button onclick="goToStep(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
-                    <button onclick="goToStep(3)" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
+                    <button id="back-btn-2" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <button id="next-btn-2" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
                 </div>
             </div>
 
+            <!-- Step 3: Your Challenges -->
             <div id="step3" class="wizard-step hidden">
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 3: Your Challenges</h2>
-                <p class="text-slate-500 mb-8">What are the biggest challenges your office is facing right now? Select all that apply.</p>
+                <p class="text-slate-500 mb-8">Based on your role, what are your biggest challenges right now? Select all that apply.</p>
                 <div id="challenges" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                    </div>
+                    <!-- Options will be populated by JS based on role -->
+                </div>
                 <div class="mt-10 flex justify-between">
-                    <button onclick="goToStep(2)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
-                    <button onclick="showResults()" class="bg-td-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">See My Recommendations</button>
+                    <button id="back-btn-3" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <button id="next-btn-3" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
                 </div>
             </div>
             
+             <!-- Step 4: Barriers -->
             <div id="step4" class="wizard-step hidden">
-                <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">Your Connected Campus Journey</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 4: Potential Barriers</h2>
+                <p class="text-slate-500 mb-8">Understanding potential hurdles helps us tailor the conversation. What are your biggest concerns about adopting new software?</p>
+                <div id="barriers" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    <!-- Options will be populated by JS -->
+                </div>
+                <div class="mt-10 flex justify-between">
+                    <button id="back-btn-4" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <button id="results-btn" class="bg-td-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">See My Recommendations</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Results -->
+            <div id="step5" class="wizard-step hidden">
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Your Connected Campus Journey</h2>
                 
+                <div id="value-proposition-container" class="bg-blue-50 border-l-4 border-td-blue text-slate-700 p-4 rounded-r-lg mb-8">
+                    <h3 class="font-bold text-td-blue">Value Proposition for Your Role</h3>
+                    <p id="value-proposition-text" class="mt-1 text-sm"></p>
+                </div>
+                
+                <div id="barrier-responses-container" class="mb-8 hidden">
+                    <h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">Addressing Your Concerns</h3>
+                    <div id="barrier-responses" class="space-y-6">
+                        <!-- Barrier responses will be populated here -->
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                     <div>
                         <h3 class="font-bold text-xl text-slate-700 mb-4 text-center">Your Current Ecosystem</h3>
-                        <div id="currentResults" class="space-y-4">
-                            </div>
+                        <div id="currentResults" class="space-y-4"></div>
                     </div>
                     <div>
                         <h3 class="font-bold text-xl text-td-green mb-4 text-center">Your Recommended Additions</h3>
-                         <div id="recommendedResults" class="space-y-4">
-                            </div>
+                         <div id="recommendedResults" class="space-y-4"></div>
                     </div>
                 </div>
 
@@ -148,12 +185,11 @@
 
                 <div>
                     <h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">Now you will be able to...</h3>
-                    <ul id="benefits" class="benefits-list text-slate-600 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                        </ul>
+                    <ul id="benefits" class="benefits-list text-slate-600 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2"></ul>
                 </div>
                 
                 <div class="mt-12 text-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button onclick="resetFinder()" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">Start Over</button>
+                    <button id="reset-btn" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">Start Over</button>
                     <a href="https://www.terradotta.com/request-demo.html" target="_blank" class="w-full sm:w-auto inline-block bg-td-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Let's start the conversation!</a>
                 </div>
             </div>
@@ -162,7 +198,8 @@
     </main>
 
     <script>
-        // --- DATA ---
+    document.addEventListener('DOMContentLoaded', function() {
+    
         const solutions = {
             'Study Abroad': {
                 icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9M3 12a9 9 0 019-9m0 18a9 9 0 00-9-9m9 9H3" />',
@@ -223,130 +260,148 @@
         };
 
         const roles = {
-            'avp': 'AVP',
-            'isss_director': 'Director of ISSS (Asst., Assoc., etc...)',
-            'dso': 'DSO',
-            'study_abroad_director': 'Director of Study Abroad or Global Education (Asst., Assoc., etc...)',
-            'advisor': 'Advisor',
+            'avp': 'Associate Vice President (AVP) for Global Education/International Affairs',
+            'isss_director': 'Director of International Student & Scholar Services (ISSS)',
+            'sa_director': 'Director of Study Abroad/Education Abroad',
+            'pdso_dso': 'Principal Designated School Official (PDSO)/Designated School Official (DSO)',
+            'advisor': 'International Student Advisor',
             'other': 'Other'
         };
 
         const challengesByRole = {
             'avp': [
-                { id: 'challenge4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] },
-                { id: 'challenge3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] },
-                { id: 'challenge6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] },
-                { id: 'challenge7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] }
+                { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] },
+                { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] },
+                { id: 'avp_c3', text: 'Concerned about ensuring compliance across all of the institution\'s international programs?', recommends: ['Travel Registry', 'AlertTraveler®', 'ISSS'] },
+                { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] }
             ],
             'isss_director': [
-                { id: 'challenge1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] },
-                { id: 'challenge7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] },
-                { id: 'challenge2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] },
-                { id: 'challenge4', text: 'Need to track international student travel for risk management?', recommends: ['Travel Registry', 'AlertTraveler®'] }
+                { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] },
+                { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] },
+                { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] },
+                { id: 'isss_dir_c4', text: 'Looking to improve support for scholars and international faculty hires?', recommends: ['ISSS'] }
             ],
-            'dso': [
-                { id: 'challenge1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] },
-                { id:_GATEWAY', text: 'Do you need a way for students to easily pay application and SEVIS fees online?', recommends: ['Payment Gateway'] },
-                { id: 'challenge_dso_comm', text: 'Is communicating with students and sending them critical updates a challenge?', recommends: ['ISSS'] }
+            'sa_director': [
+                { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] },
+                { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] },
+                { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] },
+                { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']}
             ],
-            'study_abroad_director': [
-                { id: 'challenge5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] },
-                { id: 'challenge3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] },
-                { id: 'challenge6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] },
-                { id: 'challenge_sa_apps', text: 'Are you looking to increase study abroad applications and streamline program discovery?', recommends: ['Study Abroad'] }
+             'pdso_dso': [
+                { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] },
+                { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] },
+                { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] },
+                { id: 'pdso_c4', text: 'Does training and supervising additional DSOs take up too much of your time?', recommends: ['ISSS'] }
             ],
             'advisor': [
-                { id: 'challenge5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] },
-                { id: 'challenge_advisor_comm', text: 'Is it difficult to track your communications and appointments with advisees?', recommends: ['Engage', 'Study Abroad'] },
-                { id: 'challenge1', text: 'Are you involved in helping students with their visa or immigration paperwork?', recommends: ['ISSS'] }
+                { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] },
+                { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] },
+                { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] },
+                { id: 'adv_c4', text: 'Need a better way to provide both academic and immigration advising?', recommends: ['ISSS', 'Study Abroad'] }
             ],
             'other': [
-                 { id: 'challenge1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] },
-                 { id: 'challenge2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] },
-                 { id: 'challenge3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] },
-                 { id: 'challenge4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] },
-                 { id: 'challenge5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] },
-                 { id: 'challenge6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] },
-                 { id: 'challenge7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] }
+                 { id: 'other_c1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] },
+                 { id: 'other_c2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] },
+                 { id: 'other_c3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] },
+                 { id: 'other_c4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] },
+                 { id: 'other_c5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] },
+                 { id: 'other_c6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] },
+                 { id: 'other_c7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] }
             ]
+        };
+
+        const barriers = [
+            { id: 'barrier_cost', text: 'Overall cost and budget constraints.' },
+            { id: 'barrier_implementation', text: 'The time and effort required for implementation.' },
+            { id: 'barrier_buy_in', text: 'Getting internal buy-in from stakeholders and leadership.' },
+            { id: 'barrier_it', text: 'Limited IT department bandwidth and resources.' },
+            { id: 'barrier_training', text: 'Concerns about training users and ensuring adoption.' }
+        ];
+
+        const barrierResponses = {
+            'barrier_cost': {
+                title: 'Regarding Cost & Budget',
+                text: 'We understand budget is a primary concern. Terra Dotta\'s platform approach offers significant long-term ROI by consolidating systems, automating manual tasks to free up staff time, and mitigating costly compliance risks. We offer flexible pricing and can work with you to build a business case that demonstrates clear value to your leadership.'
+            },
+            'barrier_implementation': {
+                title: 'Regarding Implementation',
+                text: 'Our dedicated implementation team partners with you every step of the way. We use a proven methodology to ensure a smooth transition, from data migration to system configuration, minimizing disruption to your office and getting you up and running efficiently.'
+            },
+            'barrier_buy_in': {
+                title: 'Regarding Internal Buy-In',
+                text: 'Getting everyone on board is key. Our solutions provide clear benefits for every role, from advisors to leadership. The Dashboards tool is specifically designed to help you demonstrate the impact and success of your global programs to stakeholders, making the case for investment clear and compelling.'
+            },
+            'barrier_it': {
+                title: 'Regarding IT Bandwidth',
+                text: 'We know IT resources are precious. As a cloud-hosted solution, Terra Dotta manages the infrastructure, security, and updates, significantly reducing the burden on your campus IT team. Our integrations are designed to work seamlessly with existing campus systems.'
+            },
+            'barrier_training': {
+                title: 'Regarding Training & Adoption',
+                text: 'User adoption is critical for success. We provide comprehensive training resources, including live sessions, on-demand videos, and detailed documentation. Our intuitive user interface is designed to be user-friendly, ensuring your team can leverage the full power of the platform quickly.'
+            }
+        };
+        
+        const valuePropositionByRole = {
+            'avp': 'AVPs can demonstrate measurable progress toward internationalization goals while ensuring institutional safety and compliance.',
+            'isss_director': 'Dramatically reduces administrative burden while ensuring 100% SEVIS compliance and enhancing the international student experience.',
+            'sa_director': 'Enables growth in study abroad participation while maintaining the highest safety standards and operational efficiency.',
+            'pdso_dso': 'Eliminates SEVIS compliance anxiety through automated workflows and fail-safes, protecting institutional certification while reducing administrative burden.',
+            'advisor': 'Empowers advisors to focus on high-value student interactions while automating routine tasks and ensuring compliance.',
+            'other': 'Terra Dotta\'s comprehensive platform addresses core challenges across global education, from strategic leadership to day-to-day compliance.'
         };
 
         // --- DOM ELEMENTS ---
         const rolesContainer = document.getElementById('roles');
+        const roleError = document.getElementById('role-error');
         const currentSolutionsContainer = document.getElementById('currentSolutions');
         const challengesContainer = document.getElementById('challenges');
+        const barriersContainer = document.getElementById('barriers');
         const currentResultsContainer = document.getElementById('currentResults');
         const recommendedResultsContainer = document.getElementById('recommendedResults');
         const benefitsContainer = document.getElementById('benefits');
+        const valuePropositionText = document.getElementById('value-proposition-text');
+        const barrierResponsesContainer = document.getElementById('barrier-responses-container');
+        const barrierResponsesContent = document.getElementById('barrier-responses');
 
-
-        // --- LOGIC ---
         let currentStep = 1;
 
-        // Function to create a radio button item for roles
         function createRadio(id, name, value, labelText) {
-            return `
-                <div class="flex items-start">
-                    <input id="${id}" name="${name}" type="radio" value="${value}" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
-                    <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>
-                </div>
-            `;
+            return `<div class="flex items-start"><input id="${id}" name="${name}" type="radio" value="${value}" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1"><label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label></div>`;
         }
 
-        // Function to create a checkbox item
         function createCheckbox(id, name, value, labelText) {
-            return `
-                <div class="flex items-start">
-                    <input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
-                    <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>
-                </div>
-            `;
+            return `<div class="flex items-start"><input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1"><label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label></div>`;
         }
 
         function createSolutionCard(key, isFaded = false) {
             const solution = solutions[key];
             if (!solution) return '';
-            
             const opacityClass = isFaded ? 'opacity-60' : '';
-            const cardContent = `
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-slate-100 ${solution.color} rounded-lg p-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">${solution.icon}</svg>
-                    </div>
-                    <h4 class="font-bold text-md ml-3 text-slate-800">${key}</h4>
-                </div>
-                <p class="text-slate-500 text-sm mt-2 flex-grow">${solution.description}</p>
-            `;
-
-            if (isFaded || !solution.url) {
-                return `<div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full ${opacityClass}">${cardContent}</div>`;
-            }
-
-            return `
-                <a href="${solution.url}" target="_blank" class="block no-underline card-hover text-current">
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full">
-                        ${cardContent}
-                    </div>
-                </a>
-            `;
+            const cardContent = `<div class="flex items-center"><div class="flex-shrink-0 bg-slate-100 ${solution.color} rounded-lg p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">${solution.icon}</svg></div><h4 class="font-bold text-md ml-3 text-slate-800">${key}</h4></div><p class="text-slate-500 text-sm mt-2 flex-grow">${solution.description}</p>`;
+            return isFaded || !solution.url ? `<div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full ${opacityClass}">${cardContent}</div>` : `<a href="${solution.url}" target="_blank" class="block no-underline card-hover text-current"><div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full">${cardContent}</div></a>`;
         }
         
-        // Populate Step 1: Roles
         Object.keys(roles).forEach(key => {
             rolesContainer.innerHTML += createRadio(`role_${key}`, 'role', key, roles[key]);
         });
         
-        // Populate Step 2: Current Solutions
+        document.querySelectorAll('input[name="role"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (document.querySelector('input[name="role"]:checked')) {
+                    roleError.classList.add('hidden');
+                }
+            });
+        });
+        
         Object.keys(solutions).forEach(key => {
             const id = `current_${key.replace(/[^a-zA-Z0-9]/g, '')}`;
             currentSolutionsContainer.innerHTML += createCheckbox(id, 'currentSolutions', key, key);
         });
         
-        // Populate and Filter Challenges on Step 3
-        function populateAndFilterChallenges() {
+        function populateChallenges() {
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
             const challengesForRole = challengesByRole[selectedRole];
-            challengesContainer.innerHTML = ''; // Clear previous challenges
+            challengesContainer.innerHTML = ''; 
             
             challengesForRole.forEach(challenge => {
                 challengesContainer.innerHTML += createCheckbox(challenge.id, 'challenges', challenge.id, challenge.text);
@@ -355,8 +410,9 @@
             const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
             const challengesToHide = new Set();
             challengesForRole.forEach(challenge => {
-                const shouldHide = challenge.recommends.some(rec => ownedSolutions.includes(rec));
-                if (shouldHide) {
+                // HIDE challenge if user owns ANY solution that solves it
+                const challengeIsSolved = challenge.recommends.some(rec => ownedSolutions.includes(rec));
+                if (challengeIsSolved) {
                     challengesToHide.add(challenge.id);
                 }
             });
@@ -368,28 +424,52 @@
                 }
             });
         }
+        
+        function populateBarriers() {
+            barriersContainer.innerHTML = '';
+            barriers.forEach(barrier => {
+                barriersContainer.innerHTML += createCheckbox(barrier.id, 'barriers', barrier.id, barrier.text);
+            });
+        }
 
-        // Navigate between steps
         function goToStep(stepNumber) {
-            if (stepNumber === 3) {
-                populateAndFilterChallenges();
-            }
-
             document.getElementById(`step${currentStep}`).classList.add('hidden');
             document.getElementById(`step${stepNumber}`).classList.remove('hidden');
             currentStep = stepNumber;
         }
+        
+        document.getElementById('next-btn-1').addEventListener('click', () => {
+             const roleSelected = document.querySelector('input[name="role"]:checked');
+             if (!roleSelected) {
+                roleError.classList.remove('hidden'); 
+                return; 
+             }
+             roleError.classList.add('hidden');
+             goToStep(2);
+        });
 
-        // Calculate and display recommendations
+        document.getElementById('back-btn-2').addEventListener('click', () => goToStep(1));
+        document.getElementById('next-btn-2').addEventListener('click', () => {
+             populateChallenges();
+             goToStep(3);
+        });
+        document.getElementById('back-btn-3').addEventListener('click', () => goToStep(2));
+        document.getElementById('next-btn-3').addEventListener('click', () => {
+            populateBarriers();
+            goToStep(4);
+        });
+        document.getElementById('back-btn-4').addEventListener('click', () => goToStep(3));
+
         function showResults() {
             const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
             const selectedChallengeIds = Array.from(document.querySelectorAll('input[name="challenges"]:checked')).map(cb => cb.value);
+            const selectedBarrierIds = Array.from(document.querySelectorAll('input[name="barriers"]:checked')).map(cb => cb.value);
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
-            const allPossibleChallengesForRole = challengesByRole[selectedRole];
+            const allChallengesForRole = challengesByRole[selectedRole];
 
             let recommendations = new Set();
             selectedChallengeIds.forEach(challengeId => {
-                const challenge = allPossibleChallengesForRole.find(c => c.id === challengeId);
+                const challenge = allChallengesForRole.find(p => p.id === challengeId);
                 if (challenge) {
                     challenge.recommends.forEach(rec => recommendations.add(rec));
                 }
@@ -397,31 +477,40 @@
 
             const finalRecommendations = [...recommendations].filter(rec => !ownedSolutions.includes(rec));
             
-            // --- POPULATE RESULTS PAGE ---
-            currentResultsContainer.innerHTML = '';
-            if (ownedSolutions.length > 0) {
-                ownedSolutions.forEach(key => {
-                    currentResultsContainer.innerHTML += createSolutionCard(key, true);
+            // Populate Barrier Responses
+            barrierResponsesContent.innerHTML = '';
+            if (selectedBarrierIds.length > 0) {
+                barrierResponsesContainer.classList.remove('hidden');
+                selectedBarrierIds.forEach(barrierId => {
+                    const response = barrierResponses[barrierId];
+                    if (response) {
+                        barrierResponsesContent.innerHTML += `
+                            <div class="p-4 bg-slate-50 rounded-lg">
+                                <h4 class="font-semibold text-slate-800">${response.title}</h4>
+                                <p class="text-slate-600 text-sm mt-1">${response.text}</p>
+                            </div>
+                        `;
+                    }
                 });
             } else {
-                 currentResultsContainer.innerHTML = `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">You didn't select any current solutions.</p>`;
+                barrierResponsesContainer.classList.add('hidden');
             }
 
-            recommendedResultsContainer.innerHTML = '';
+
+            // Populate Solution Cards
+            currentResultsContainer.innerHTML = ownedSolutions.length > 0 ? ownedSolutions.map(key => createSolutionCard(key, true)).join('') : `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">You didn't select any current solutions.</p>`;
+
             if (finalRecommendations.length > 0) {
-                 finalRecommendations.forEach(key => {
-                     recommendedResultsContainer.innerHTML += createSolutionCard(key);
-                 });
+                recommendedResultsContainer.innerHTML = finalRecommendations.map(key => createSolutionCard(key)).join('');
             } else if (selectedChallengeIds.length > 0) {
-                 recommendedResultsContainer.innerHTML = `<div class="text-center p-8 border-2 border-dashed border-td-green rounded-lg bg-green-50">
-                     <h4 class="font-bold text-td-green mb-2">You're Covered!</h4>
-                     <p class="text-slate-600">Based on the challenges you selected, your current solutions already have you covered.</p>
-                 </div>`;
+                recommendedResultsContainer.innerHTML = `<div class="text-center p-8 border-2 border-dashed border-td-green rounded-lg bg-green-50"><h4 class="font-bold text-td-green mb-2">You're Covered!</h4><p class="text-slate-600">Based on the challenges you selected, your current solutions have you covered.</p></div>`;
             } else {
-                 recommendedResultsContainer.innerHTML = `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">Select a challenge in Step 3 to see recommendations.</p>`;
+                recommendedResultsContainer.innerHTML = `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">Select a challenge in Step 3 to see recommendations.</p>`;
             }
 
-            benefitsContainer.innerHTML = '';
+            // Populate Value Proposition and Benefits
+            valuePropositionText.textContent = valuePropositionByRole[selectedRole];
+            
             const allBenefits = new Set();
             const allSolutions = [...ownedSolutions, ...finalRecommendations];
             allSolutions.forEach(key => {
@@ -430,23 +519,23 @@
                 }
             });
 
-            if (allBenefits.size > 0) {
-                allBenefits.forEach(benefit => {
-                    benefitsContainer.innerHTML += `<li>${benefit}</li>`;
-                });
-            } else {
-                 benefitsContainer.innerHTML = `<p class="text-slate-500 text-center col-span-full">Your benefits will appear here once you select solutions and challenges.</p>`;
-            }
+            benefitsContainer.innerHTML = allBenefits.size > 0 ? [...allBenefits].map(benefit => `<li>${benefit}</li>`).join('') : `<p class="text-slate-500 text-center col-span-full">Your benefits will appear here once you select solutions and challenges.</p>`;
 
-            goToStep(4);
+            goToStep(5);
         }
         
-        // Reset the entire finder
+        document.getElementById('results-btn').addEventListener('click', showResults);
+        
         function resetFinder() {
             document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(cb => cb.checked = false);
+            roleError.classList.add('hidden');
+            barrierResponsesContainer.classList.add('hidden');
             goToStep(1);
         }
+        
+        document.getElementById('reset-btn').addEventListener('click', resetFinder);
 
+    });
     </script>
 </body>
 </html>
