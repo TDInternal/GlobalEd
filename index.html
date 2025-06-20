@@ -84,6 +84,29 @@
             font-weight: bold;
             font-size: 18px;
         }
+
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #step5, #step5 * {
+                visibility: visible;
+            }
+            #step5 {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            #results-actions, #back-btn-5 {
+                display: none;
+            }
+             .card-hover, .bg-white {
+                box-shadow: none !important;
+                border: 1px solid #ccc;
+            }
+        }
     </style>
 </head>
 <body class="text-slate-700">
@@ -188,7 +211,9 @@
                     <ul id="benefits" class="benefits-list text-slate-600 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2"></ul>
                 </div>
                 
-                <div class="mt-12 text-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <div id="results-actions" class="mt-12 text-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button id="print-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-lg transition-all">Print</button>
+                    <button id="email-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-8 rounded-lg transition-all">Email Results</button>
                     <button id="reset-btn" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">Start Over</button>
                     <a href="https://www.terradotta.com/request-demo.html" target="_blank" class="w-full sm:w-auto inline-block bg-td-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Let's start the conversation!</a>
                 </div>
@@ -272,14 +297,14 @@
             'avp': [
                 { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] },
                 { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] },
-                { id: 'avp_c3', text: 'Concerned about ensuring compliance across all of the institution\'s international programs?', recommends: ['Travel Registry', 'AlertTraveler®', 'ISSS'] },
+                { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] },
                 { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] }
             ],
             'isss_director': [
                 { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] },
                 { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] },
                 { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] },
-                { id: 'isss_dir_c4', text: 'Looking to improve support for scholars and international faculty hires?', recommends: ['ISSS'] }
+                { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] }
             ],
             'sa_director': [
                 { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] },
@@ -291,17 +316,17 @@
                 { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] },
                 { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] },
                 { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] },
-                { id: 'pdso_c4', text: 'Does training and supervising additional DSOs take up too much of your time?', recommends: ['ISSS'] }
+                { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] }
             ],
             'advisor': [
                 { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] },
                 { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] },
                 { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] },
-                { id: 'adv_c4', text: 'Need a better way to provide both academic and immigration advising?', recommends: ['ISSS', 'Study Abroad'] }
+                { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] }
             ],
             'other': [
                  { id: 'other_c1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] },
-                 { id: 'other_c2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] },
+                 { id: 'other_c2', 'text': 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] },
                  { id: 'other_c3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] },
                  { id: 'other_c4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] },
                  { id: 'other_c5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] },
@@ -410,8 +435,8 @@
             const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
             const challengesToHide = new Set();
             challengesForRole.forEach(challenge => {
-                // HIDE challenge if user owns ANY solution that solves it
-                const challengeIsSolved = challenge.recommends.some(rec => ownedSolutions.includes(rec));
+                // CORRECTED LOGIC: Hide challenge only if user owns EVERY solution that solves it.
+                const challengeIsSolved = challenge.recommends.every(rec => ownedSolutions.includes(rec));
                 if (challengeIsSolved) {
                     challengesToHide.add(challenge.id);
                 }
@@ -534,6 +559,55 @@
         }
         
         document.getElementById('reset-btn').addEventListener('click', resetFinder);
+        document.getElementById('print-btn').addEventListener('click', () => window.print());
+        document.getElementById('email-btn').addEventListener('click', emailResults);
+
+        function emailResults() {
+            const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
+            const selectedChallengeIds = Array.from(document.querySelectorAll('input[name="challenges"]:checked')).map(cb => cb.value);
+            const selectedRoleKey = document.querySelector('input[name="role"]:checked')?.value || 'other';
+            const allChallengesForRole = challengesByRole[selectedRoleKey];
+
+            let recommendations = new Set();
+            selectedChallengeIds.forEach(challengeId => {
+                const challenge = allChallengesForRole.find(p => p.id === challengeId);
+                if (challenge) {
+                    challenge.recommends.forEach(rec => recommendations.add(rec));
+                }
+            });
+
+            const finalRecommendations = [...recommendations].filter(rec => !ownedSolutions.includes(rec));
+
+            let body = `
+                <h1>Your Terra Dotta Solution Finder Results</h1>
+                <h3>Value Proposition for: ${roles[selectedRoleKey]}</h3>
+                <p>${valuePropositionByRole[selectedRoleKey]}</p>
+                <hr>
+            `;
+
+            if (finalRecommendations.length > 0) {
+                body += '<h2>Recommended Additions:</h2><ul>';
+                finalRecommendations.forEach(key => {
+                    body += `<li><b>${key}:</b> ${solutions[key].description}</li>`;
+                });
+                body += '</ul>';
+            }
+
+            if (ownedSolutions.length > 0) {
+                 body += '<h2>Your Current Ecosystem:</h2><ul>';
+                ownedSolutions.forEach(key => {
+                    body += `<li><b>${key}:</b> ${solutions[key].description}</li>`;
+                });
+                body += '</ul>';
+            }
+
+            const subject = "Your Terra Dotta Solution Finder Results";
+            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            const a = document.createElement('a');
+            a.href = mailtoLink;
+            a.click();
+        }
 
     });
     </script>
