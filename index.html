@@ -578,35 +578,32 @@
 
             const finalRecommendations = [...recommendations].filter(rec => !ownedSolutions.includes(rec));
 
-            let body = `
-                <h1>Your Terra Dotta Solution Finder Results</h1>
-                <h3>Value Proposition for: ${roles[selectedRoleKey]}</h3>
-                <p>${valuePropositionByRole[selectedRoleKey]}</p>
-                <hr>
-            `;
+            let body = `Your Terra Dotta Solution Finder Results\r\n\r\n`;
+            body += `Value Proposition for: ${roles[selectedRoleKey]}\r\n`;
+            body += `${valuePropositionByRole[selectedRoleKey]}\r\n\r\n`;
+            body += `--------------------------------------\r\n\r\n`;
 
             if (finalRecommendations.length > 0) {
-                body += '<h2>Recommended Additions:</h2><ul>';
+                body += 'Recommended Additions:\r\n';
                 finalRecommendations.forEach(key => {
-                    body += `<li><b>${key}:</b> ${solutions[key].description}</li>`;
+                    body += `  - ${key}: ${solutions[key].description}\r\n`;
                 });
-                body += '</ul>';
+                body += '\r\n';
             }
 
             if (ownedSolutions.length > 0) {
-                 body += '<h2>Your Current Ecosystem:</h2><ul>';
+                 body += 'Your Current Ecosystem:\r\n';
                 ownedSolutions.forEach(key => {
-                    body += `<li><b>${key}:</b> ${solutions[key].description}</li>`;
+                    body += `  - ${key}: ${solutions[key].description}\r\n`;
                 });
-                body += '</ul>';
+                 body += '\r\n';
             }
 
             const subject = "Your Terra Dotta Solution Finder Results";
             const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             
-            const a = document.createElement('a');
-            a.href = mailtoLink;
-            a.click();
+            // Use window.location.href for better compatibility
+            window.location.href = mailtoLink;
         }
 
     });
