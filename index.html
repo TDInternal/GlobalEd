@@ -134,7 +134,7 @@
         /* Print-specific styles */
         @media print {
             /* Hide elements that are not part of the results page */
-            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator, #data-status {
+            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator, #data-status, #admin-panel {
                 display: none !important;
             }
             
@@ -312,7 +312,6 @@
                         <a href="https://www.terradotta.com/request-demo.html" target="_blank" class="w-full sm:w-auto inline-block bg-td-green hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">Ready to Schedule a Demo?</a>
                         <button id="connect-director-btn" class="w-full sm:w-auto bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all hidden">Connect with your Local Director</button>
                         <button id="email-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition-all">Email Results to Myself</button>
-                        <button id="save-results-btn" class="w-full sm:w-auto bg-td-orange hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all">Save Results</button>
                         <button id="print-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition-all">Print</button>
                         <button id="reset-btn" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-lg transition-all">Start Over</button>
                     </div>
@@ -432,7 +431,7 @@
                 }, duration);
             }
         }
-
+        
         // --- DATABASE SIMULATION ---
         let database = {
             sessions: JSON.parse(window.sessionStorage?.getItem('td_sessions') || '[]'),
@@ -441,42 +440,6 @@
 
         function generateSessionId() {
             return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-
-        function saveToDatabase(data) {
-            try {
-                showNotification('Saving to database...', 'info', 1000);
-                setTimeout(() => {
-                    const existingIndex = database.sessions.findIndex(s => s.sessionId === data.sessionId);
-                    if(existingIndex > -1) {
-                        database.sessions[existingIndex] = data;
-                    } else {
-                        database.sessions.push(data);
-                    }
-                    
-                    database.analytics.completionsToday++;
-                    if (data.selections.role) {
-                        database.analytics.popularRoles[data.selections.role] = 
-                            (database.analytics.popularRoles[data.selections.role] || 0) + 1;
-                    }
-                    
-                    try {
-                        window.sessionStorage?.setItem('td_sessions', JSON.stringify(database.sessions));
-                        window.sessionStorage?.setItem('td_analytics', JSON.stringify(database.analytics));
-                    } catch (e) {
-                       console.error("SessionStorage is unavailable.", e);
-                    }
-                    
-                    showNotification('Results saved to database successfully!', 'success');
-                    updateAnalyticsDisplay();
-                    
-                    saveStatus.classList.remove('hidden');
-                    setTimeout(() => saveStatus.classList.add('hidden'), 2000);
-                }, 500);
-            } catch (error) {
-                showNotification('Failed to save to database. Please try again.', 'error');
-                console.error("Database save error:", error);
-            }
         }
 
         function updateAnalyticsDisplay() {
@@ -555,7 +518,8 @@
         function initializeTool() {
             rolesContainer.innerHTML = '';
             currentSolutionsContainer.innerHTML = '';
-            
+            stateDropdown.innerHTML = '<option value="">Select your state...</option>';
+
             Object.keys(roles).forEach(key => { 
                 rolesContainer.appendChild(createRadio(`role_${key}`, 'role', key, roles[key])); 
             });
@@ -571,7 +535,6 @@
                 completed: false
             };
             database.analytics.sessionsToday++;
-
             updateAnalyticsDisplay();
             updateProgress(1);
         }
@@ -824,15 +787,7 @@
             window.location.href = `mailto:${selectedDirectorEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             showNotification('Connecting you with your local director', 'info');
         });
-        
-        document.getElementById('save-results-btn').addEventListener('click', () => {
-            if (!sessionData.completed) {
-                showNotification('Please complete the tool first before saving results', 'error');
-                return;
-            }
-            saveToDatabase(sessionData);
-        });
-        
+                
         document.getElementById('back-btn-6').addEventListener('click', () => goToStep(5));
 
         // --- ADMIN PANEL FUNCTIONALITY ---
