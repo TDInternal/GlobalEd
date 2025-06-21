@@ -134,7 +134,7 @@
         /* Print-specific styles */
         @media print {
             /* Hide elements that are not part of the results page */
-            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator {
+            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator, #admin-panel {
                 display: none !important;
             }
             
@@ -266,9 +266,12 @@
             <div id="step3" class="wizard-step hidden">
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 3: What You Have</h2>
                 <p class="text-slate-500 mb-8">Select the Terra Dotta solutions your campus or office currently uses. Or, let us know if you're new to Terra Dotta.</p>
-                <div class="text-right mb-6">
-                    <button id="no-solutions-btn" class="bg-td-orange hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-sm">
+                <div class="flex space-x-4 mb-6">
+                    <button id="no-solutions-btn" class="flex-1 text-center bg-td-orange hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-sm">
                         I'm new to Terra Dotta
+                    </button>
+                    <button id="competitor-btn" class="flex-1 text-center bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-sm">
+                        I use another vendor
                     </button>
                 </div>
                 <div id="currentSolutions" class="space-y-4 pt-6 border-t border-slate-200"></div>
@@ -304,6 +307,7 @@
             <div id="step6" class="wizard-step hidden">
                 <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Your Connected Campus Journey</h2>
                 <div id="value-proposition-container" class="bg-blue-50 border-l-4 border-td-blue text-slate-700 p-4 rounded-r-lg mb-8"><h3 class="font-bold text-td-blue">Value Proposition for Your Role</h3><p id="value-proposition-text" class="mt-1 text-sm"></p></div>
+                <div id="advantage-container" class="mb-8 hidden"><h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">The Terra Dotta Advantage</h3><div id="advantage-responses" class="space-y-6"></div></div>
                 <div id="barrier-responses-container" class="mb-8 hidden"><h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">Addressing Your Concerns</h3><div id="barrier-responses" class="space-y-6"></div></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12"><div><h3 class="font-bold text-xl text-slate-700 mb-4 text-center">Your Current Ecosystem</h3><div id="currentResults" class="space-y-4"></div></div><div><h3 class="font-bold text-xl text-td-green mb-4 text-center">Your Recommended Additions</h3><div id="recommendedResults" class="space-y-4"></div></div></div>
                 <hr class="my-10 border-slate-200">
@@ -354,9 +358,16 @@
         };
         const roles = { 'avp': 'Associate Vice President (AVP) for Global Education/International Affairs', 'isss_director': 'Director of International Student & Scholar Services (ISSS)', 'sa_director': 'Director of Study Abroad/Education Abroad', 'pdso_dso': 'Principal Designated School Official (PDSO)/Designated School Official (DSO)', 'advisor': 'International Student Advisor', 'recruiter': 'International Recruitment Officer', 'risk': 'Risk Management/Legal Affairs', 'liaison': 'Academic Department Liaison', 'other': 'Other' };
         
-        const challengesByRole = { 'avp': [ { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] }, { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] }, { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] } ], 'isss_director': [ { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] }, { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] }, { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] }, { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] } ], 'sa_director': [ { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] }, { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] }, { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']} , { id: 'sa_dir_c5', text: 'Is collecting application fees or program deposits a manual and time-consuming process?', recommends: ['Payment Gateway'] } ], 'pdso_dso': [ { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] }, { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] }, { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] }, { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] } ], 'advisor': [ { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] }, { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] }, { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] }, { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] } ], 'recruiter': [ { id: 'rec_c1', text: 'Need to streamline recruitment campaigns and track prospect engagement?', recommends: ['Engage'] }, { id: 'rec_c2', text: 'Looking for better ways to measure conversion rates from inquiry to applicant?', recommends: ['Dashboards', 'Engage'] }, { id: 'rec_c3', text: 'Struggling to manage recruitment partnerships and agent relationships?', recommends: ['Agreements Management'] }], 'risk': [ { id: 'risk_c1', text: 'Need a comprehensive duty of care and liability management solution for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'risk_c2', text: 'Looking for a centralized system for contract and international partnership oversight?', recommends: ['Agreements Management'] }, { id: 'risk_c3', text: 'Need a better way to report on risk and compliance across the institution?', recommends: ['Dashboards'] }], 'liaison': [ { id: 'lia_c1', text: 'Need tools to help manage faculty-led programs and their academic integration?', recommends: ['Study Abroad'] }, { id: 'lia_c2', text: 'Do you need departmental access for supporting international students and scholars?', recommends: ['ISSS'] }, { id: 'lia_c3', text: 'Looking for a way to track your department\'s student and faculty travel?', recommends: ['Travel Registry'] }], 'other': [ { id: 'other_c1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] }, { id: 'other_c2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] }, { id: 'other_c3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] }, { id: 'other_c4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] }, { id: 'other_c5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] }, { id: 'other_c6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] }, { id: 'other_c7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] } ] };
+        const challengesByRole = { 'avp': [ { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] }, { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] }, { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple global engagement offices.', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] } ], 'isss_director': [ { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] }, { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] }, { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] }, { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] } ], 'sa_director': [ { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] }, { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] }, { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']} , { id: 'sa_dir_c5', text: 'Is collecting application fees or program deposits a manual and time-consuming process?', recommends: ['Payment Gateway'] } ], 'pdso_dso': [ { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] }, { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] }, { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] }, { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] } ], 'advisor': [ { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] }, { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] }, { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] }, { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] } ], 'recruiter': [ { id: 'rec_c1', text: 'Need to streamline recruitment campaigns and track prospect engagement?', recommends: ['Engage'] }, { id: 'rec_c2', text: 'Looking for better ways to measure conversion rates from inquiry to applicant?', recommends: ['Dashboards', 'Engage'] }, { id: 'rec_c3', text: 'Struggling to manage recruitment partnerships and agent relationships?', recommends: ['Agreements Management'] }], 'risk': [ { id: 'risk_c1', text: 'Need a comprehensive duty of care and liability management solution for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'risk_c2', text: 'Looking for a centralized system for contract and international partnership oversight?', recommends: ['Agreements Management'] }, { id: 'risk_c3', text: 'Need a better way to report on risk and compliance across the institution?', recommends: ['Dashboards'] }], 'liaison': [ { id: 'lia_c1', text: 'Need tools to help manage faculty-led programs and their academic integration?', recommends: ['Study Abroad'] }, { id: 'lia_c2', text: 'Do you need departmental access for supporting international students and scholars?', recommends: ['ISSS'] }, { id: 'lia_c3', text: 'Looking for a way to track your department\'s student and faculty travel?', recommends: ['Travel Registry'] }], 'other': [ { id: 'other_c1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] }, { id: 'other_c2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] }, { id: 'other_c3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] }, { id: 'other_c4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] }, { id: 'other_c5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] }, { id: 'other_c6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] }, { id: 'other_c7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] } ] };
 
         const focusAreasByRole = {
+            'avp': [
+                { id: 'focus_avp_data', text: 'Establishing a single source of truth for all global engagement data.', recommends: ['Dashboards', 'Study Abroad', 'ISSS', 'Travel Registry'] },
+                { id: 'focus_avp_roi', text: 'Demonstrating the ROI and strategic impact of our global initiatives.', recommends: ['Dashboards'] },
+                { id: 'focus_avp_risk', text: 'Ensuring comprehensive safety and risk management for all institutional travel.', recommends: ['AlertTraveler®', 'Travel Registry'] },
+                { id: 'focus_avp_reputation', text: "Enhancing our institution's global brand and reputation.", recommends: ['Engage', 'Agreements Management'] },
+                { id: 'focus_avp_efficiency', text: 'Streamlining operations across multiple global engagement offices.', recommends: ['Study Abroad', 'ISSS', 'Agreements Management'] }
+            ],
             'sa_director': [
                 { id: 'focus_sa_apps', text: 'Managing program applications and admissions.', recommends: ['Study Abroad', 'Engage'] },
                 { id: 'focus_sa_partners', text: 'Overseeing partnership agreements and relationships.', recommends: ['Agreements Management'] },
@@ -374,7 +385,6 @@
                 { id: 'focus_risk_compliance', text: 'Ensuring compliance with travel-related policies (e.g., NSPM-33).', recommends: ['Travel Registry'] },
                 { id: 'focus_risk_partnerships', text: 'Gaining oversight of international partnership agreements.', recommends: ['Agreements Management'] },
             ],
-            // Default for all other roles
             'default': [
                 { id: 'focus_all_outbound', text: 'Managing outbound student mobility (Study Abroad).', recommends: ['Study Abroad', 'Engage'] },
                 { id: 'focus_all_inbound', text: 'Managing inbound international students and scholars (ISSS).', recommends: ['ISSS'] },
@@ -383,6 +393,22 @@
                 { id: 'focus_all_data', text: 'Visualizing data and reporting on global initiatives.', recommends: ['Dashboards'] },
             ]
         };
+
+        const competitorPainPoints = [
+             { id: 'pain_reminders', text: 'Limited automation for applicant reminders.', recommends: ['Study Abroad', 'Engage'], advantage: 'Unlike other vendors, Terra Dotta offers robust automation for applicant communication, enabling tailored reminders and notifications that efficiently guide applicants through the process. This saves staff time, ensures timely, personalized engagement, and drives higher application completion rates.'},
+             { id: 'pain_budget', text: 'Inability to build custom budget sheets within the software.', recommends: ['Study Abroad'], advantage: 'Terra Dotta’s budget sheets offer a fully integrated platform, connecting financial data with program management workflows. With real-time updates, customizable features, and clear cost breakdowns for students, it streamlines collaboration and eliminates manual processes.' },
+             { id: 'pain_audit', text: 'Difficulty auditing or tracking applicant progress.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s progress audit provides real-time snapshots of applicant progress, offering superior visibility and accountability. It enables staff to track progress, address bottlenecks, and manage workflows efficiently, ensuring a smoother experience.' },
+             { id: 'pain_batch', text: 'Limited ability to perform actions on applications in batch.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s batch actions offer robust features for managing high application volumes efficiently. It enables bulk updates, communications, and data changes, saving time, reducing manual effort, and ensuring smooth, scalable workflows during peak periods.' },
+             { id: 'pain_import', text: 'Inability to import applications in bulk.', recommends: ['Study Abroad'], advantage: 'Terra Dotta’s application import feature enables efficient mass imports, saving time and reducing manual effort. Primarily used during implementation, it streamlines operations and supports high-volume data management.' },
+             { id: 'pain_exchange', text: 'Difficulty tracking exchange balances without a separate product.', recommends: ['Agreements Management', 'Study Abroad'], advantage: 'Terra Dotta’s exchange balance functionality streamlines agreement management by tracking exchange student numbers directly within its Study Abroad platform, providing integrated tools for greater visibility, accountability, and simplified partnership management.' },
+             { id: 'pain_risk', text: 'An inadequate traveler safety and risk management solution.', recommends: ['AlertTraveler®'], advantage: 'Unlike basic check-in tools, AlertTraveler® offers a comprehensive safety solution with real-time alerts, location tracking, and direct communication. It elevates Terra Dotta beyond application management, providing unmatched duty-of-care capabilities.' },
+             { id: 'pain_admins', text: 'Strict limits on administrator accounts and permissions.', recommends: [], advantage: 'Terra Dotta provides unmatched flexibility in user and permission settings, allowing institutions to tailor the system to their processes. Unlike vendors with rigid limits, Terra Dotta adapts to your workflows, ensuring seamless integration and enhanced efficiency.' },
+             { id: 'pain_cost', text: 'Unpredictable costs and being "nickeled and dimed" for add-ons.', recommends: [], advantage: 'Terra Dotta offers comprehensive solutions with bundled services and features, providing transparent, predictable pricing. While other vendors may upsell for critical features like SSO or basic integrations, Terra Dotta includes them.' },
+             { id: 'pain_payments', text: 'A disconnected or manual payment collection process.', recommends: ['Payment Gateway'], advantage: 'Terra Dotta’s payment gateway integrations are more robust and seamless than others, offering fully integrated solutions that simplify processes for administrators and applicants by automating payment status updates.' },
+             { id: 'pain_data', text: 'Inability to create custom reports or visualize data effectively.', recommends: ['Dashboards'], advantage: 'Terra Dotta’s advanced analytics and visualization tools offer customizable reporting without relying on external tools like Excel. It provides real-time insights in a centralized platform, empowering institutions to make data-driven decisions easily.' },
+             { id: 'pain_forms', text: 'Losing historical data when editing forms.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s form management preserves historical data by versioning. When you edit a form, it creates a new version, ensuring you never lose past submission data—a significant advantage for data retention and quality of life.' },
+             { id: 'pain_site', text: 'No option for a public-facing, informational website.', recommends: ['Study Abroad'], advantage: 'Terra Dotta allows partners to have a public-facing website to inform stakeholders, becoming a key part of the recruitment and information-sharing process and eliminating a barrier for prospective students.' }
+        ];
         
         const barriers = [ { id: 'barrier_cost', text: 'Overall cost and budget constraints.' }, { id: 'barrier_implementation', text: 'The time and effort required for implementation.' }, { id: 'barrier_buy_in', text: 'Getting internal buy-in from stakeholders and leadership.' }, { id: 'barrier_it', text: 'Limited IT department bandwidth and resources.' }, { id: 'barrier_training', text: 'Concerns about training users and ensuring adoption.' } ];
         const barrierResponses = { 'barrier_cost': { title: 'Regarding Cost & Budget', text: 'We understand budget is a primary concern. Terra Dotta\'s platform approach offers significant long-term ROI by consolidating systems, automating manual tasks to free up staff time, and mitigating costly compliance risks. We offer flexible pricing and can work with you to build a business case that demonstrates clear value to your leadership.' }, 'barrier_implementation': { title: 'Regarding Implementation', text: 'Our dedicated implementation team partners with you every step of the way. We use a proven methodology to ensure a smooth transition, from data migration to system configuration, minimizing disruption to your office and getting you up and running efficiently.' }, 'barrier_buy_in': { title: 'Regarding Internal Buy-In', text: 'Getting everyone on board is key. Our solutions provide clear benefits for every role, from advisors to leadership. The Dashboards tool is specifically designed to help you demonstrate the impact and success of your global programs to stakeholders, making the case for investment clear and compelling.' }, 'barrier_it': { title: 'Regarding IT Bandwidth', text: 'We know IT resources are precious. As a cloud-hosted solution, Terra Dotta manages the infrastructure, security, and updates, significantly reducing the burden on your campus IT team. Our integrations are designed to work seamlessly with existing campus systems.' }, 'barrier_training': { title: 'Regarding Training & Adoption', text: 'User adoption is critical for success. We provide comprehensive training resources, including live sessions, on-demand videos, and detailed documentation. Our intuitive user interface is designed to be user-friendly, ensuring your team can leverage the full power of the platform quickly.' } };
@@ -405,17 +431,21 @@
         const valuePropositionText = document.getElementById('value-proposition-text');
         const barrierResponsesContainer = document.getElementById('barrier-responses-container');
         const barrierResponsesContent = document.getElementById('barrier-responses');
+        const advantageContainer = document.getElementById('advantage-container');
+        const advantageResponsesContent = document.getElementById('advantage-responses');
         const confirmationModal = document.getElementById('confirmation-modal');
         const connectDirectorBtn = document.getElementById('connect-director-btn');
         const notificationContainer = document.getElementById('notification-container');
         const progressSteps = document.querySelectorAll('.progress-step');
         const noSolutionsBtn = document.getElementById('no-solutions-btn');
+        const competitorBtn = document.getElementById('competitor-btn');
         const challengesPrompt = document.getElementById('challenges-prompt');
 
         let currentStep = 1;
         let selectedDirectorEmail = null;
         let sessionData = {};
         let isNewUserPath = false;
+        let isCompetitorUserPath = false;
         let isInternationalUser = false;
 
         // --- NOTIFICATION SYSTEM ---
@@ -534,6 +564,7 @@
                 completed: false
             };
             isNewUserPath = false;
+            isCompetitorUserPath = false;
             isInternationalUser = false;
             updateProgress(1);
         }
@@ -567,6 +598,18 @@
 
         noSolutionsBtn.addEventListener('click', () => {
             isNewUserPath = true;
+            isCompetitorUserPath = false;
+            document.querySelectorAll('input[name="currentSolutions"]').forEach(cb => {
+                cb.checked = false;
+                trackCheckboxSelection('currentSolutions', cb.value, false);
+            });
+            populateChallenges();
+            goToStep(4);
+        });
+
+        competitorBtn.addEventListener('click', () => {
+            isNewUserPath = false;
+            isCompetitorUserPath = true;
             document.querySelectorAll('input[name="currentSolutions"]').forEach(cb => {
                 cb.checked = false;
                 trackCheckboxSelection('currentSolutions', cb.value, false);
@@ -616,6 +659,7 @@
         document.getElementById('back-btn-3').addEventListener('click', () => goToStep(2));
         document.getElementById('next-btn-3').addEventListener('click', () => {
             isNewUserPath = false;
+            isCompetitorUserPath = false;
             populateChallenges(); 
             goToStep(4);
         });
@@ -649,9 +693,9 @@
         function populateChallenges() {
             challengesContainer.innerHTML = '';
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
+            challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
 
             if (isNewUserPath) {
-                challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
                 challengesPrompt.textContent = "What areas of Global Education are you most focused on?";
                 let focusAreas = focusAreasByRole[selectedRole] || focusAreasByRole['default'];
                 if (isInternationalUser) {
@@ -660,8 +704,16 @@
                 focusAreas.forEach(area => {
                     challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
                 });
+            } else if (isCompetitorUserPath) {
+                 challengesPrompt.textContent = "What are your biggest pain points with your current provider? We can help.";
+                 let painPoints = competitorPainPoints;
+                 if (isInternationalUser) {
+                    painPoints = painPoints.filter(p => !p.recommends.includes('ISSS'));
+                 }
+                 painPoints.forEach(point => {
+                    challengesContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
+                });
             } else {
-                challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
                 challengesPrompt.textContent = "Based on your role, what are your biggest challenges right now? Select all that apply.";
                 let challengesForRole = challengesByRole[selectedRole];
                 
@@ -705,13 +757,27 @@
             const selectedBarrierIds = Array.from(document.querySelectorAll('input[name="barriers"]:checked')).map(cb => cb.value);
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
             
-            const allPossibleChallenges = [...Object.values(challengesByRole).flat(), ...Object.values(focusAreasByRole).flat()];
+            const allPossibleChallenges = [...Object.values(challengesByRole).flat(), ...Object.values(focusAreasByRole).flat(), ...competitorPainPoints];
 
             let recommendations = new Set();
+            let advantageText = '';
             selectedChallengeIds.forEach(challengeId => { 
                 const challenge = allPossibleChallenges.find(p => p.id === challengeId); 
-                if (challenge) { challenge.recommends.forEach(rec => recommendations.add(rec)); } 
+                if (challenge) { 
+                    challenge.recommends.forEach(rec => recommendations.add(rec)); 
+                    if (challenge.advantage) {
+                        advantageText += `<div class="p-4 bg-slate-50 rounded-lg"><h4 class="font-semibold text-slate-800">${challenge.text}</h4><p class="text-slate-600 text-sm mt-1">${challenge.advantage}</p></div>`;
+                    }
+                } 
             });
+
+            if(isCompetitorUserPath && advantageText){
+                advantageContainer.classList.remove('hidden');
+                advantageResponsesContent.innerHTML = advantageText;
+            } else {
+                advantageContainer.classList.add('hidden');
+            }
+
             const finalRecommendations = [...recommendations].filter(rec => !ownedSolutions.includes(rec));
             
             barrierResponsesContent.innerHTML = '';
@@ -752,7 +818,7 @@
             sessionData.finalRecommendations = finalRecommendations;
             sessionData.ownedSolutions = ownedSolutions;
             
-            showNotification('Recommendations generated! �', 'success');
+            showNotification('Recommendations generated! 🎉', 'success');
             goToStep(6);
         }
         
@@ -763,6 +829,7 @@
             stateDropdownContainer.classList.add('hidden');
             stateDropdown.value = '';
             barrierResponsesContainer.classList.add('hidden');
+            advantageContainer.classList.add('hidden');
             connectDirectorBtn.classList.add('hidden');
             showNotification('Tool reset successfully', 'info');
             
@@ -849,4 +916,3 @@
     </script>
 </body>
 </html>
-�
