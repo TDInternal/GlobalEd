@@ -283,7 +283,7 @@
 
             <!-- Step 4: Your Challenges -->
             <div id="step4" class="wizard-step hidden">
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 4: Your Focus Areas</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 4: Your Challenges</h2>
                 <p id="challenges-prompt" class="text-slate-500 mb-8">Based on your role, what are your biggest challenges right now? Select all that apply.</p>
                 <div id="challenges" class="space-y-4"></div>
                 <div class="mt-10 flex justify-between">
@@ -362,10 +362,10 @@
 
         const focusAreasByRole = {
             'avp': [
-                { id: 'focus_avp_data', text: 'Establishing a single source of truth for all global engagement data.', recommends: ['Dashboards', 'Study Abroad', 'ISSS', 'Travel Registry'] },
                 { id: 'focus_avp_roi', text: 'Demonstrating the ROI and strategic impact of our global initiatives.', recommends: ['Dashboards'] },
-                { id: 'focus_avp_risk', text: 'Ensuring comprehensive safety and risk management for all institutional travel.', recommends: ['AlertTraveler®', 'Travel Registry'] },
+                { id: 'focus_avp_data', text: 'Establishing a single source of truth for all global engagement data.', recommends: ['Dashboards', 'Study Abroad', 'ISSS', 'Travel Registry'] },
                 { id: 'focus_avp_reputation', text: "Enhancing our institution's global brand and reputation.", recommends: ['Engage', 'Agreements Management'] },
+                { id: 'focus_avp_risk', text: 'Ensuring comprehensive safety and risk management for all institutional travel.', recommends: ['AlertTraveler®', 'Travel Registry'] },
                 { id: 'focus_avp_efficiency', text: 'Streamlining operations across multiple global engagement offices.', recommends: ['Study Abroad', 'ISSS', 'Agreements Management'] }
             ],
             'sa_director': [
@@ -693,47 +693,34 @@
         function populateChallenges() {
             challengesContainer.innerHTML = '';
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
+            const step4Title = document.querySelector('#step4 h2');
+
+            // Default layout and title
             challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
+            step4Title.textContent = 'Your Focus Areas';
 
             if (isNewUserPath) {
-                challengesPrompt.innerHTML = "What are your primary objectives? <br/> <span class='text-sm text-slate-400'>Select one or more areas to see how Terra Dotta can help.</span>";
                 let focusAreas = focusAreasByRole[selectedRole] || focusAreasByRole['default'];
-
+                
                 if (selectedRole === 'avp') {
-                    challengesContainer.className = 'space-y-6';
-                    const avpFocusOrder = ['Data & ROI', 'Reputation & Growth', 'Risk & Compliance', 'Operational Efficiency'];
-                    const avpFocusGroups = {
-                        'Data & ROI': focusAreas.filter(a => ['focus_avp_data', 'focus_avp_roi'].includes(a.id)),
-                        'Reputation & Growth': focusAreas.filter(a => ['focus_avp_reputation'].includes(a.id)),
-                        'Risk & Compliance': focusAreas.filter(a => ['focus_avp_risk'].includes(a.id)),
-                        'Operational Efficiency': focusAreas.filter(a => ['focus_avp_efficiency'].includes(a.id))
-                    };
-
-                    avpFocusOrder.forEach(groupName => {
-                         const groupContainer = document.createElement('div');
-                         const groupTitle = document.createElement('h3');
-                         groupTitle.className = 'text-lg font-semibold text-slate-700 border-b pb-2';
-                         groupTitle.textContent = groupName;
-                         groupContainer.appendChild(groupTitle);
-                         const challengeList = document.createElement('div');
-                         challengeList.className = 'space-y-4 pt-4';
-                         avpFocusGroups[groupName].forEach(area => {
-                            challengeList.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
-                         });
-                         groupContainer.appendChild(challengeList);
-                         challengesContainer.appendChild(groupContainer);
-                    });
-
+                    step4Title.textContent = 'Your Challenges';
+                    challengesPrompt.innerHTML = "As a leader, your challenges are unique. Select the areas where you're facing the most pressure.";
+                    challengesContainer.className = 'space-y-4';
+                    const avpFocusOrder = ['focus_avp_roi', 'focus_avp_data', 'focus_avp_reputation', 'focus_avp_risk', 'focus_avp_efficiency'];
+                    focusAreas.sort((a, b) => avpFocusOrder.indexOf(a.id) - avpFocusOrder.indexOf(b.id));
 
                 } else {
-                     if (isInternationalUser) {
-                        focusAreas = focusAreas.filter(area => !area.recommends.includes('ISSS'));
-                    }
-                    focusAreas.forEach(area => {
-                        challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
-                    });
+                    challengesPrompt.innerHTML = "What are your primary objectives? <br/> <span class='text-sm text-slate-400'>Select one or more areas to see how Terra Dotta can help.</span>";
                 }
+
+                if (isInternationalUser) {
+                    focusAreas = focusAreas.filter(area => !area.recommends.includes('ISSS'));
+                }
+                focusAreas.forEach(area => {
+                    challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
+                });
             } else if (isCompetitorUserPath) {
+                 step4Title.textContent = 'Your Challenges';
                  challengesPrompt.innerHTML = "If you use another vendor, we would love to understand your challenges. <br/> <span class='text-sm text-slate-400'>These are some of the known challenges with other vendors.</span>";
                  let painPoints = competitorPainPoints;
                  if (isInternationalUser) {
@@ -743,6 +730,7 @@
                     challengesContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
                 });
             } else {
+                step4Title.textContent = 'Your Challenges';
                 challengesPrompt.textContent = "Based on your role, what are your biggest challenges right now? Select all that apply.";
                 let challengesForRole = challengesByRole[selectedRole];
                 
