@@ -85,10 +85,56 @@
             font-size: 18px;
         }
 
+        /* Notification animations */
+        .notification {
+            animation: slideInFromRight 0.5s ease-out;
+        }
+        
+        .notification.removing {
+            animation: slideOutToRight 0.3s ease-in forwards;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutToRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Progress indicator */
+        .progress-step {
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.completed {
+            background-color: #8dc73f;
+            color: white;
+        }
+
+        .progress-step.current {
+            background-color: #00aeef;
+            color: white;
+        }
+
         /* Print-specific styles */
         @media print {
             /* Hide elements that are not part of the results page */
-            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button {
+            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator, #data-status {
                 display: none !important;
             }
             
@@ -137,6 +183,10 @@
     </style>
 </head>
 <body class="text-slate-700">
+    
+    <!-- Notification Container -->
+    <div id="notification-container" class="fixed top-4 right-4 z-50 space-y-2 w-full max-w-sm"></div>
+
     <!-- Header Banner -->
     <header class="bg-td-blue text-white text-center py-12 sm:py-16">
         <div class="max-w-5xl mx-auto px-4">
@@ -149,7 +199,30 @@
     </header>
 
     <main class="max-w-5xl mx-auto p-4 sm:p-8 -mt-20">
-        <div id="solutionFinder" class="bg-white p-6 sm:p-10 rounded-2xl shadow-lg relative min-h-[550px]">
+        
+        <!-- Progress Indicator -->
+        <div id="progress-indicator" class="bg-white p-3 rounded-t-2xl shadow-lg mb-0 border-b border-slate-200">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <div class="progress-step current w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold">1</div>
+                    <div class="flex-1 h-1 bg-slate-200 rounded-full"><div class="progress-bar w-0 bg-td-blue h-1 rounded-full"></div></div>
+                    <div class="progress-step w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold">2</div>
+                     <div class="flex-1 h-1 bg-slate-200 rounded-full"><div class="progress-bar w-0 bg-td-blue h-1 rounded-full"></div></div>
+                    <div class="progress-step w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold">3</div>
+                     <div class="flex-1 h-1 bg-slate-200 rounded-full"><div class="progress-bar w-0 bg-td-blue h-1 rounded-full"></div></div>
+                    <div class="progress-step w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold">4</div>
+                     <div class="flex-1 h-1 bg-slate-200 rounded-full"><div class="progress-bar w-0 bg-td-blue h-1 rounded-full"></div></div>
+                    <div class="progress-step w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold">5</div>
+                     <div class="flex-1 h-1 bg-slate-200 rounded-full"><div class="progress-bar w-0 bg-td-blue h-1 rounded-full"></div></div>
+                    <div class="progress-step w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold">6</div>
+                </div>
+                <div id="data-status" class="text-sm text-slate-500">
+                    <span id="save-status" class="hidden">✓ Progress saved</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="solutionFinder" class="bg-white p-6 sm:p-10 rounded-b-2xl shadow-lg relative min-h-[550px]">
             
             <!-- Step 1: Location -->
             <div id="step1" class="wizard-step">
@@ -239,6 +312,7 @@
                         <a href="https://www.terradotta.com/request-demo.html" target="_blank" class="w-full sm:w-auto inline-block bg-td-green hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all">Ready to Schedule a Demo?</a>
                         <button id="connect-director-btn" class="w-full sm:w-auto bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all hidden">Connect with your Local Director</button>
                         <button id="email-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition-all">Email Results to Myself</button>
+                        <button id="save-results-btn" class="w-full sm:w-auto bg-td-orange hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-all">Save Results</button>
                         <button id="print-btn" class="w-full sm:w-auto bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition-all">Print</button>
                         <button id="reset-btn" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-lg transition-all">Start Over</button>
                     </div>
@@ -263,10 +337,22 @@
         </div>
     </div>
 
+    <!-- Database Analytics Panel (Hidden by default, can be toggled for admins) -->
+    <div id="admin-panel" class="fixed bottom-4 left-4 bg-white p-4 rounded-lg shadow-lg hidden max-w-xs z-40 border border-slate-200">
+        <h4 class="font-bold text-slate-800 mb-2">Session Analytics</h4>
+        <div class="text-sm space-y-1">
+            <div>Sessions today: <span id="sessions-today" class="font-semibold">0</span></div>
+            <div>Completions: <span id="completions-today" class="font-semibold">0</span></div>
+            <div>Most popular role: <span id="popular-role" class="font-semibold">-</span></div>
+        </div>
+        <button id="toggle-admin" class="text-xs text-slate-500 mt-2 hover:underline">Hide Analytics</button>
+    </div>
+
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
     
+        // --- DATA OBJECTS ---
         const solutions = { 
             'Study Abroad': { name: 'Study Abroad Platform', icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9M3 12a9 9 0 019-9m0 18a9 9 0 00-9-9m9 9H3" />', description: 'Your current system enhances the applicant experience with a searchable program catalog and seamless online applications.', solves: 'Streamline the entire outbound mobility lifecycle into one manageable hub.', color: 'text-td-blue', url: 'https://www.terradotta.com/study-abroad.html', category: 'application_program_management', categoryTitle: 'Application & Program Management' }, 
             'ISSS': { name: 'ISSS (International Student & Scholar Services)', icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656-.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />', description: 'Centralize academic records, biographic data, and SEVIS compliance management to streamline visa processes and maintain regulatory standards.', solves: 'Reduce administrative burden and SEVIS risk to improve international student yield.', color: 'text-td-blue', url: 'https://www.terradotta.com/isss.html', category: 'immigration_compliance', categoryTitle: 'Immigration Compliance' }, 
@@ -278,12 +364,7 @@
             'Dashboards': { name: 'Dashboards', icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />', description: 'Transform your data into actionable insights by tracking enrollment trends, diversity metrics, risk assessments, and program performance across all international initiatives.', solves: 'Transform raw data into visual reports to demonstrate ROI and inform strategy.', color: 'text-td-green', url: 'https://www.terradotta.com/dashboards.html', category: 'data_intelligence', categoryTitle: 'Data Intelligence & Reporting' } 
         };
         const roles = { 'avp': 'Associate Vice President (AVP) for Global Education/International Affairs', 'isss_director': 'Director of International Student & Scholar Services (ISSS)', 'sa_director': 'Director of Study Abroad/Education Abroad', 'pdso_dso': 'Principal Designated School Official (PDSO)/Designated School Official (DSO)', 'advisor': 'International Student Advisor', 'recruiter': 'International Recruitment Officer', 'risk': 'Risk Management/Legal Affairs', 'liaison': 'Academic Department Liaison', 'other': 'Other' };
-        const challengesByRole = { 'avp': [ { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] }, { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] }, { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] } ], 'isss_director': [ { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] }, { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] }, { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] }, { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] } ], 'sa_director': [ { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] }, { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] }, { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']} , { id: 'sa_dir_c5', text: 'Is collecting application fees or program deposits a manual and time-consuming process?', recommends: ['Payment Gateway'] } ], 'pdso_dso': [ { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] }, { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] }, { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] }, { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] } ], 'advisor': [ { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] }, { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] }, { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] }, { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] } ], 
-            'recruiter': [ { id: 'rec_c1', text: 'Need to streamline recruitment campaigns and track prospect engagement?', recommends: ['Engage'] }, { id: 'rec_c2', text: 'Looking for better ways to measure conversion rates from inquiry to applicant?', recommends: ['Dashboards', 'Engage'] }, { id: 'rec_c3', text: 'Struggling to manage recruitment partnerships and agent relationships?', recommends: ['Agreements Management'] }],
-            'risk': [ { id: 'risk_c1', text: 'Need a comprehensive duty of care and liability management solution for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'risk_c2', text: 'Looking for a centralized system for contract and international partnership oversight?', recommends: ['Agreements Management'] }, { id: 'risk_c3', text: 'Need a better way to report on risk and compliance across the institution?', recommends: ['Dashboards'] }],
-            'liaison': [ { id: 'lia_c1', text: 'Need tools to help manage faculty-led programs and their academic integration?', recommends: ['Study Abroad'] }, { id: 'lia_c2', text: 'Do you need departmental access for supporting international students and scholars?', recommends: ['ISSS'] }, { id: 'lia_c3', text: 'Looking for a way to track your department\'s student and faculty travel?', recommends: ['Travel Registry'] }],
-            'other': [ { id: 'other_c1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] }, { id: 'other_c2', 'text': 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] }, { id: 'other_c3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] }, { id: 'other_c4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] }, { id: 'other_c5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] }, { id: 'other_c6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] }, { id: 'other_c7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] } ] 
-        };
+        const challengesByRole = { 'avp': [ { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] }, { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] }, { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] } ], 'isss_director': [ { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] }, { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] }, { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] }, { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] } ], 'sa_director': [ { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] }, { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] }, { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']} , { id: 'sa_dir_c5', text: 'Is collecting application fees or program deposits a manual and time-consuming process?', recommends: ['Payment Gateway'] } ], 'pdso_dso': [ { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] }, { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] }, { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] }, { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] } ], 'advisor': [ { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] }, { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] }, { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] }, { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] } ], 'recruiter': [ { id: 'rec_c1', text: 'Need to streamline recruitment campaigns and track prospect engagement?', recommends: ['Engage'] }, { id: 'rec_c2', text: 'Looking for better ways to measure conversion rates from inquiry to applicant?', recommends: ['Dashboards', 'Engage'] }, { id: 'rec_c3', text: 'Struggling to manage recruitment partnerships and agent relationships?', recommends: ['Agreements Management'] }], 'risk': [ { id: 'risk_c1', text: 'Need a comprehensive duty of care and liability management solution for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'risk_c2', text: 'Looking for a centralized system for contract and international partnership oversight?', recommends: ['Agreements Management'] }, { id: 'risk_c3', text: 'Need a better way to report on risk and compliance across the institution?', recommends: ['Dashboards'] }], 'liaison': [ { id: 'lia_c1', text: 'Need tools to help manage faculty-led programs and their academic integration?', recommends: ['Study Abroad'] }, { id: 'lia_c2', text: 'Do you need departmental access for supporting international students and scholars?', recommends: ['ISSS'] }, { id: 'lia_c3', text: 'Looking for a way to track your department\'s student and faculty travel?', recommends: ['Travel Registry'] }], 'other': [ { id: 'other_c1', text: 'Managing complex SEVIS compliance for your international students?', recommends: ['ISSS'] }, { id: 'other_c2', text: 'Struggling to collect fees from applicants worldwide?', recommends: ['Payment Gateway'] }, { id: 'other_c3', text: 'Worried about how to provide a mobile safety net for your travelers?', recommends: ['AlertTraveler®'] }, { id: 'other_c4', text: 'Need a reliable way to track all university travel for risk and compliance?', recommends: ['Travel Registry'] }, { id: 'other_c5', text: 'Losing potential study abroad students from a disjointed engagement process?', recommends: ['Engage'] }, { id: 'other_c6', text: 'Having trouble managing the lifecycle of your global partnerships?', recommends: ['Agreements Management'] }, { id: 'other_c7', text: 'Struggling to create and share reports from your data to gain actionable insights?', recommends: ['Dashboards'] } ] };
         const barriers = [ { id: 'barrier_cost', text: 'Overall cost and budget constraints.' }, { id: 'barrier_implementation', text: 'The time and effort required for implementation.' }, { id: 'barrier_buy_in', text: 'Getting internal buy-in from stakeholders and leadership.' }, { id: 'barrier_it', text: 'Limited IT department bandwidth and resources.' }, { id: 'barrier_training', text: 'Concerns about training users and ensuring adoption.' } ];
         const barrierResponses = { 'barrier_cost': { title: 'Regarding Cost & Budget', text: 'We understand budget is a primary concern. Terra Dotta\'s platform approach offers significant long-term ROI by consolidating systems, automating manual tasks to free up staff time, and mitigating costly compliance risks. We offer flexible pricing and can work with you to build a business case that demonstrates clear value to your leadership.' }, 'barrier_implementation': { title: 'Regarding Implementation', text: 'Our dedicated implementation team partners with you every step of the way. We use a proven methodology to ensure a smooth transition, from data migration to system configuration, minimizing disruption to your office and getting you up and running efficiently.' }, 'barrier_buy_in': { title: 'Regarding Internal Buy-In', text: 'Getting everyone on board is key. Our solutions provide clear benefits for every role, from advisors to leadership. The Dashboards tool is specifically designed to help you demonstrate the impact and success of your global programs to stakeholders, making the case for investment clear and compelling.' }, 'barrier_it': { title: 'Regarding IT Bandwidth', text: 'We know IT resources are precious. As a cloud-hosted solution, Terra Dotta manages the infrastructure, security, and updates, significantly reducing the burden on your campus IT team. Our integrations are designed to work seamlessly with existing campus systems.' }, 'barrier_training': { title: 'Regarding Training & Adoption', text: 'User adoption is critical for success. We provide comprehensive training resources, including live sessions, on-demand videos, and detailed documentation. Our intuitive user interface is designed to be user-friendly, ensuring your team can leverage the full power of the platform quickly.' } };
         const valuePropositionByRole = { 'avp': 'AVPs can demonstrate measurable progress toward internationalization goals while ensuring institutional safety and compliance.', 'isss_director': 'Dramatically reduces administrative burden while ensuring 100% SEVIS compliance and enhancing the international student experience.', 'sa_director': 'Enables growth in study abroad participation while maintaining the highest safety standards and operational efficiency.', 'pdso_dso': 'Eliminates SEVIS compliance anxiety through automated workflows and fail-safes, protecting institutional certification while reducing administrative burden.', 'advisor': 'Empowers advisors to focus on high-value student interactions while automating routine tasks and ensuring compliance.', 'recruiter': 'Streamline recruitment campaigns, track prospect engagement, and measure conversion rates to boost international enrollment.', 'risk': 'Provides a comprehensive duty of care and liability management solution for all institutional travel, ensuring traveler safety and centralized oversight.', 'liaison': 'Empowers academic departments with tools for faculty-led program management and seamless support for international students and scholars.', 'other': 'Terra Dotta\'s comprehensive platform addresses core challenges across global education, from strategic leadership to day-to-day compliance.' };
@@ -307,65 +388,239 @@
         const barrierResponsesContent = document.getElementById('barrier-responses');
         const confirmationModal = document.getElementById('confirmation-modal');
         const connectDirectorBtn = document.getElementById('connect-director-btn');
+        const notificationContainer = document.getElementById('notification-container');
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const saveStatus = document.getElementById('save-status');
+        const adminPanel = document.getElementById('admin-panel');
 
         let currentStep = 1;
         let selectedDirectorEmail = null;
+        let sessionData = {};
 
-        function createRadio(id, name, value, labelText) { return `<div class="flex items-start"><input id="${id}" name="${name}" type="radio" value="${value}" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1"><label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label></div>`; }
-        function createCheckbox(id, name, value, labelText) { return `<div class="flex items-start"><input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1"><label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label></div>`; }
-        function createSolutionCard(key, isFaded = false) { const solution = solutions[key]; if (!solution) return ''; const opacityClass = isFaded ? 'opacity-60' : ''; const cardContent = `<div class="flex items-center"><div class="flex-shrink-0 bg-slate-100 ${solution.color} rounded-lg p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">${solution.icon}</svg></div><h4 class="font-bold text-md ml-3 text-slate-800">${key}</h4></div><p class="text-slate-500 text-sm mt-2 flex-grow">${solution.description}</p>`; return isFaded || !solution.url ? `<div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full ${opacityClass}">${cardContent}</div>` : `<a href="${solution.url}" target="_blank" class="block no-underline card-hover text-current"><div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full">${cardContent}</div></a>`; }
+        // --- NOTIFICATION SYSTEM ---
+        function showNotification(message, type = 'info', duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = `notification max-w-sm bg-white border-l-4 p-4 rounded-lg shadow-lg ${
+                type === 'success' ? 'border-td-green' : 
+                type === 'error' ? 'border-red-500' : 
+                type === 'info' ? 'border-td-blue' : 'border-td-orange'
+            }`;
+            
+            const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : type === 'info' ? 'ℹ' : '⚠';
+            const color = type === 'success' ? 'text-td-green' : 
+                          type === 'error' ? 'text-red-500' : 
+                          type === 'info' ? 'text-td-blue' : 'text-td-orange';
+            
+            notification.innerHTML = `
+                <div class="flex items-start">
+                    <span class="font-bold text-lg ${color} mr-3">${icon}</span>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-slate-800">${message}</p>
+                    </div>
+                    <button class="ml-2 text-slate-400 hover:text-slate-600" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.classList.add('removing');
+                        setTimeout(() => notification.remove(), 300);
+                    }
+                }, duration);
+            }
+        }
+
+        // --- DATABASE SIMULATION ---
+        let database = {
+            sessions: JSON.parse(window.sessionStorage?.getItem('td_sessions') || '[]'),
+            analytics: JSON.parse(window.sessionStorage?.getItem('td_analytics') || '{"sessionsToday": 0, "completionsToday": 0, "popularRoles": {}}')
+        };
+
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function saveToDatabase(data) {
+            try {
+                showNotification('Saving to database...', 'info', 1000);
+                setTimeout(() => {
+                    const existingIndex = database.sessions.findIndex(s => s.sessionId === data.sessionId);
+                    if(existingIndex > -1) {
+                        database.sessions[existingIndex] = data;
+                    } else {
+                        database.sessions.push(data);
+                    }
+                    
+                    database.analytics.completionsToday++;
+                    if (data.selections.role) {
+                        database.analytics.popularRoles[data.selections.role] = 
+                            (database.analytics.popularRoles[data.selections.role] || 0) + 1;
+                    }
+                    
+                    try {
+                        window.sessionStorage?.setItem('td_sessions', JSON.stringify(database.sessions));
+                        window.sessionStorage?.setItem('td_analytics', JSON.stringify(database.analytics));
+                    } catch (e) {
+                       console.error("SessionStorage is unavailable.", e);
+                    }
+                    
+                    showNotification('Results saved to database successfully!', 'success');
+                    updateAnalyticsDisplay();
+                    
+                    saveStatus.classList.remove('hidden');
+                    setTimeout(() => saveStatus.classList.add('hidden'), 2000);
+                }, 500);
+            } catch (error) {
+                showNotification('Failed to save to database. Please try again.', 'error');
+                console.error("Database save error:", error);
+            }
+        }
+
+        function updateAnalyticsDisplay() {
+            document.getElementById('sessions-today').textContent = database.analytics.sessionsToday;
+            document.getElementById('completions-today').textContent = database.analytics.completionsToday;
+            
+            const popularRoles = database.analytics.popularRoles;
+            if (Object.keys(popularRoles).length > 0) {
+                const mostPopular = Object.keys(popularRoles).reduce((a, b) => popularRoles[a] > popularRoles[b] ? a : b);
+                document.getElementById('popular-role').textContent = roles[mostPopular]?.split(' ')[0] || mostPopular;
+            } else {
+                 document.getElementById('popular-role').textContent = '-';
+            }
+        }
+
+        // --- PROGRESS TRACKING ---
+        function updateProgress(step) {
+            progressSteps.forEach((stepEl, index) => {
+                stepEl.classList.remove('current', 'completed');
+                if (index + 1 < step) {
+                    stepEl.classList.add('completed');
+                } else if (index + 1 === step) {
+                    stepEl.classList.add('current');
+                }
+            });
+            trackSelection('currentStep', step);
+        }
         
-        Object.keys(roles).forEach(key => { rolesContainer.innerHTML += createRadio(`role_${key}`, 'role', key, roles[key]); });
-        Object.keys(solutions).forEach(key => { currentSolutionsContainer.innerHTML += createCheckbox(`current_${key.replace(/[^a-zA-Z0-9]/g, '')}`, 'currentSolutions', key, key); });
-        usStates.forEach(state => { stateDropdown.innerHTML += `<option value="${state}">${state}</option>`; });
+        function trackSelection(key, value) {
+            sessionData.selections[key] = value;
+        }
+
+        function trackCheckboxSelection(name, value, isChecked) {
+            if (!sessionData.selections[name]) {
+                sessionData.selections[name] = [];
+            }
+            if (isChecked) {
+                if (!sessionData.selections[name].includes(value)) {
+                    sessionData.selections[name].push(value);
+                }
+            } else {
+                sessionData.selections[name] = sessionData.selections[name].filter(v => v !== value);
+            }
+        }
         
+        // --- UTILITY FUNCTIONS ---
+        function createRadio(id, name, value, labelText) {
+            const div = document.createElement('div');
+            div.className = 'flex items-start';
+            div.innerHTML = `<input id="${id}" name="${name}" type="radio" value="${value}" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
+                             <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>`;
+            const input = div.querySelector('input');
+            input.addEventListener('change', () => trackSelection(name, value));
+            return div;
+        }
+        
+        function createCheckbox(id, name, value, labelText) {
+            const div = document.createElement('div');
+            div.className = 'flex items-start';
+            div.innerHTML = `<input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
+                             <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>`;
+            const input = div.querySelector('input');
+            input.addEventListener('change', (event) => trackCheckboxSelection(name, value, event.target.checked));
+            return div;
+        }
+        
+        function createSolutionCard(key, isFaded = false) { 
+            const solution = solutions[key]; 
+            if (!solution) return ''; 
+            const opacityClass = isFaded ? 'opacity-60' : ''; 
+            const cardContent = `<div class="flex items-center"><div class="flex-shrink-0 bg-slate-100 ${solution.color} rounded-lg p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">${solution.icon}</svg></div><h4 class="font-bold text-md ml-3 text-slate-800">${key}</h4></div><p class="text-slate-500 text-sm mt-2 flex-grow">${solution.description}</p>`; 
+            return isFaded || !solution.url ? `<div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full ${opacityClass}">${cardContent}</div>` : `<a href="${solution.url}" target="_blank" class="block no-underline card-hover text-current"><div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col h-full">${cardContent}</div></a>`; 
+        }
+
+        // --- INITIALIZATION ---
+        function initializeTool() {
+            rolesContainer.innerHTML = '';
+            currentSolutionsContainer.innerHTML = '';
+            
+            Object.keys(roles).forEach(key => { 
+                rolesContainer.appendChild(createRadio(`role_${key}`, 'role', key, roles[key])); 
+            });
+            Object.keys(solutions).forEach(key => { 
+                currentSolutionsContainer.appendChild(createCheckbox(`current_${key.replace(/[^a-zA-Z0-9]/g, '')}`, 'currentSolutions', key, key)); 
+            });
+            usStates.forEach(state => { stateDropdown.innerHTML += `<option value="${state}">${state}</option>`; });
+            
+            sessionData = {
+                sessionId: generateSessionId(),
+                startTime: new Date().toISOString(),
+                selections: {},
+                completed: false
+            };
+            database.analytics.sessionsToday++;
+
+            updateAnalyticsDisplay();
+            updateProgress(1);
+        }
+        
+        function goToStep(stepNumber) { 
+            document.getElementById(`step${currentStep}`).classList.add('hidden'); 
+            document.getElementById(`step${stepNumber}`).classList.remove('hidden'); 
+            currentStep = stepNumber; 
+            updateProgress(stepNumber);
+            
+            if (stepNumber > 1 && stepNumber < 6) {
+                showNotification(`Step ${stepNumber - 1} completed!`, 'success', 2000);
+            }
+        }
+
+        // --- UI INTERACTION LISTENERS ---
         document.querySelectorAll('input[name="location"]').forEach(radio => {
             radio.addEventListener('change', (event) => {
-                if(event.target.value === 'us') {
+                if (event.target.value === 'us') {
                     stateDropdownContainer.classList.remove('hidden');
                 } else {
                     stateDropdownContainer.classList.add('hidden');
+                    stateDropdown.value = '';
                     selectedDirectorEmail = 'daisy.gould@terradotta.com';
+                    trackSelection('location', 'intl');
                 }
-                 locationError.classList.add('hidden');
+                locationError.classList.add('hidden');
             });
         });
-
-        function populateChallenges() {
-            const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
-            const challengesForRole = challengesByRole[selectedRole];
-            challengesContainer.innerHTML = ''; 
-            challengesForRole.forEach(challenge => { challengesContainer.innerHTML += createCheckbox(challenge.id, 'challenges', challenge.id, challenge.text); });
-            const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
-            const challengesToHide = new Set();
-            challengesForRole.forEach(challenge => {
-                const challengeIsSolved = challenge.recommends.every(rec => ownedSolutions.includes(rec));
-                if (challengeIsSolved) { challengesToHide.add(challenge.id); }
-            });
-            challengesForRole.forEach(challenge => {
-                const challengeElement = document.getElementById(challenge.id)?.parentElement;
-                if (challengeElement) { challengeElement.style.display = challengesToHide.has(challenge.id) ? 'none' : 'flex'; }
-            });
-        }
         
-        function populateBarriers() { barriersContainer.innerHTML = ''; barriers.forEach(barrier => { barriersContainer.innerHTML += createCheckbox(barrier.id, 'barriers', barrier.id, barrier.text); }); }
-        function goToStep(stepNumber) { document.getElementById(`step${currentStep}`).classList.add('hidden'); document.getElementById(`step${stepNumber}`).classList.remove('hidden'); currentStep = stepNumber; }
-        
-        // --- Button Event Listeners ---
+        // --- NAVIGATION BUTTON LISTENERS ---
         document.getElementById('next-btn-1').addEventListener('click', () => {
             const location = document.querySelector('input[name="location"]:checked');
             if (!location) {
                 locationError.textContent = "Please select a location to continue.";
                 locationError.classList.remove('hidden'); 
+                showNotification('Please select your location first', 'error');
                 return; 
             }
             if(location.value === 'us'){
                 if (!stateDropdown.value){
                     locationError.textContent = "Please select your state to continue.";
                     locationError.classList.remove('hidden'); 
+                    showNotification('Please select your state', 'error');
                     return;
                 }
                 selectedDirectorEmail = directorEmailsByState[stateDropdown.value] || null;
+                trackSelection('location', 'us');
+                trackSelection('state', stateDropdown.value);
             }
             locationError.classList.add('hidden');
             goToStep(2);
@@ -374,7 +629,11 @@
         document.getElementById('back-btn-2').addEventListener('click', () => goToStep(1));
         document.getElementById('next-btn-2').addEventListener('click', () => {
             const roleSelected = document.querySelector('input[name="role"]:checked');
-            if (!roleSelected) { roleError.classList.remove('hidden'); return; }
+            if (!roleSelected) { 
+                roleError.classList.remove('hidden'); 
+                showNotification('Please select your role first', 'error');
+                return; 
+            }
             roleError.classList.add('hidden');
             goToStep(3);
         });
@@ -387,12 +646,39 @@
 
         document.getElementById('back-btn-4').addEventListener('click', () => goToStep(3));
         document.getElementById('next-btn-4').addEventListener('click', () => {
-             populateBarriers();
-             goToStep(5);
+            populateBarriers();
+            goToStep(5);
         });
         
         document.getElementById('back-btn-5').addEventListener('click', () => goToStep(4));
         document.getElementById('results-btn').addEventListener('click', showResults);
+        
+        function populateChallenges() {
+            const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
+            const challengesForRole = challengesByRole[selectedRole];
+            challengesContainer.innerHTML = ''; 
+            challengesForRole.forEach(challenge => { 
+                challengesContainer.appendChild(createCheckbox(challenge.id, 'challenges', challenge.id, challenge.text)); 
+            });
+            
+            const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
+            const challengesToHide = new Set();
+            challengesForRole.forEach(challenge => {
+                const challengeIsSolved = challenge.recommends.every(rec => ownedSolutions.includes(rec));
+                if (challengeIsSolved) { challengesToHide.add(challenge.id); }
+            });
+            challengesForRole.forEach(challenge => {
+                const challengeElement = document.getElementById(challenge.id)?.parentElement;
+                if (challengeElement) { challengeElement.style.display = challengesToHide.has(challenge.id) ? 'none' : 'flex'; }
+            });
+        }
+        
+        function populateBarriers() { 
+            barriersContainer.innerHTML = ''; 
+            barriers.forEach(barrier => { 
+                barriersContainer.appendChild(createCheckbox(barrier.id, 'barriers', barrier.id, barrier.text)); 
+            }); 
+        }
         
         function showResults() {
             if (selectedDirectorEmail) {
@@ -407,16 +693,27 @@
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
             const allChallengesForRole = challengesByRole[selectedRole];
             let recommendations = new Set();
-            selectedChallengeIds.forEach(challengeId => { const challenge = allChallengesForRole.find(p => p.id === challengeId); if (challenge) { challenge.recommends.forEach(rec => recommendations.add(rec)); } });
+            selectedChallengeIds.forEach(challengeId => { 
+                const challenge = allChallengesForRole.find(p => p.id === challengeId); 
+                if (challenge) { challenge.recommends.forEach(rec => recommendations.add(rec)); } 
+            });
             const finalRecommendations = [...recommendations].filter(rec => !ownedSolutions.includes(rec));
             
             barrierResponsesContent.innerHTML = '';
             if (selectedBarrierIds.length > 0) {
                 barrierResponsesContainer.classList.remove('hidden');
-                selectedBarrierIds.forEach(barrierId => { const response = barrierResponses[barrierId]; if (response) { barrierResponsesContent.innerHTML += `<div class="p-4 bg-slate-50 rounded-lg"><h4 class="font-semibold text-slate-800">${response.title}</h4><p class="text-slate-600 text-sm mt-1">${response.text}</p></div>`; } });
-            } else { barrierResponsesContainer.classList.add('hidden'); }
+                selectedBarrierIds.forEach(barrierId => { 
+                    const response = barrierResponses[barrierId]; 
+                    if (response) { 
+                        barrierResponsesContent.innerHTML += `<div class="p-4 bg-slate-50 rounded-lg"><h4 class="font-semibold text-slate-800">${response.title}</h4><p class="text-slate-600 text-sm mt-1">${response.text}</p></div>`; 
+                    } 
+                });
+            } else { 
+                barrierResponsesContainer.classList.add('hidden'); 
+            }
 
             currentResultsContainer.innerHTML = ownedSolutions.length > 0 ? ownedSolutions.map(key => createSolutionCard(key, true)).join('') : `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">You didn't select any current solutions.</p>`;
+            
             if (finalRecommendations.length > 0) {
                 recommendedResultsContainer.innerHTML = finalRecommendations.map(key => createSolutionCard(key)).join('');
             } else if (selectedChallengeIds.length > 0) {
@@ -428,8 +725,19 @@
             valuePropositionText.textContent = valuePropositionByRole[selectedRole];
             const allBenefits = new Set();
             const allSolutionsList = [...ownedSolutions, ...finalRecommendations];
-            allSolutionsList.forEach(key => { if(solutions[key] && solutions[key].solves) { allBenefits.add(solutions[key].solves); } });
+            allSolutionsList.forEach(key => { 
+                if(solutions[key] && solutions[key].solves) { 
+                    allBenefits.add(solutions[key].solves); 
+                } 
+            });
             benefitsContainer.innerHTML = allBenefits.size > 0 ? [...allBenefits].map(benefit => `<li>${benefit}</li>`).join('') : `<p class="text-slate-500 text-center col-span-full">Your benefits will appear here once you select solutions and challenges.</p>`;
+            
+            sessionData.completed = true;
+            sessionData.completedTime = new Date().toISOString();
+            sessionData.finalRecommendations = finalRecommendations;
+            sessionData.ownedSolutions = ownedSolutions;
+            
+            showNotification('Recommendations generated! 🎉', 'success');
             goToStep(6);
         }
         
@@ -441,18 +749,17 @@
             stateDropdown.value = '';
             barrierResponsesContainer.classList.add('hidden');
             connectDirectorBtn.classList.add('hidden');
+            showNotification('Tool reset successfully', 'info');
+            
+            initializeTool();
             goToStep(1);
         }
         
         function getResultsForEmail() {
-            const ownedSolutions = Array.from(document.querySelectorAll('input[name="currentSolutions"]:checked')).map(cb => cb.value);
-            const selectedChallengeIds = Array.from(document.querySelectorAll('input[name="challenges"]:checked')).map(cb => cb.value);
-            const selectedRoleKey = document.querySelector('input[name="role"]:checked')?.value || 'other';
-            const allChallengesForRole = challengesByRole[selectedRoleKey];
-            let recommendations = new Set();
-            selectedChallengeIds.forEach(challengeId => { const challenge = allChallengesForRole.find(p => p.id === challengeId); if (challenge) { challenge.recommends.forEach(rec => recommendations.add(rec)); } });
-            const finalRecommendations = [...recommendations].filter(rec => !ownedSolutions.includes(rec));
-            
+            const ownedSolutions = sessionData.ownedSolutions || [];
+            const finalRecommendations = sessionData.finalRecommendations || [];
+            const selectedRoleKey = sessionData.selections.role || 'other';
+
             let body = `Your Key Challenge\r\n`;
             body += `${valuePropositionByRole[selectedRoleKey]}\r\n\r\n`;
 
@@ -466,7 +773,6 @@
             
             if (finalRecommendations.length > 0) {
                 body += 'Recommended Strategic Additions\r\n\r\n';
-
                 const categorizedRecs = {};
                 finalRecommendations.forEach(key => {
                     const category = solutions[key].category;
@@ -475,43 +781,74 @@
                     }
                     categorizedRecs[category].push(key);
                 });
-
                 for (const category in categorizedRecs) {
                     body += `${solutions[categorizedRecs[category][0]].categoryTitle}\r\n`;
                     categorizedRecs[category].forEach(key => {
-                         const solution = solutions[key];
-                         body += `${solution.name} - ${solution.description}\r\n`;
+                        const solution = solutions[key];
+                        body += `${solution.name} - ${solution.description}\r\n`;
                     });
                     body += '\r\n';
                 }
             }
-
             return { body, subject: `Terra Dotta Solution Finder Results` };
         }
 
+        // --- FINAL ACTION BUTTON LISTENERS ---
         document.getElementById('reset-btn').addEventListener('click', () => {
             confirmationModal.classList.remove('hidden');
         });
+        
         document.getElementById('confirm-reset-btn').addEventListener('click', () => {
             resetFinder();
             confirmationModal.classList.add('hidden');
         });
+        
         document.getElementById('cancel-reset-btn').addEventListener('click', () => {
             confirmationModal.classList.add('hidden');
         });
 
-        document.getElementById('print-btn').addEventListener('click', () => window.print());
+        document.getElementById('print-btn').addEventListener('click', () => {
+            showNotification('Preparing document for printing...', 'info', 1000);
+            window.print();
+        });
+        
         document.getElementById('email-btn').addEventListener('click', () => { 
             const { subject, body } = getResultsForEmail(); 
             window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; 
+            showNotification('Opening email client with your results', 'info');
         });
+        
         connectDirectorBtn.addEventListener('click', () => {
             if (!selectedDirectorEmail) return;
             const { subject, body } = getResultsForEmail();
             window.location.href = `mailto:${selectedDirectorEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            showNotification('Connecting you with your local director', 'info');
+        });
+        
+        document.getElementById('save-results-btn').addEventListener('click', () => {
+            if (!sessionData.completed) {
+                showNotification('Please complete the tool first before saving results', 'error');
+                return;
+            }
+            saveToDatabase(sessionData);
         });
         
         document.getElementById('back-btn-6').addEventListener('click', () => goToStep(5));
+
+        // --- ADMIN PANEL FUNCTIONALITY ---
+        document.getElementById('toggle-admin').addEventListener('click', () => {
+            adminPanel.classList.toggle('hidden');
+        });
+
+        document.querySelector('header').addEventListener('dblclick', () => {
+            adminPanel.classList.toggle('hidden');
+            if (!adminPanel.classList.contains('hidden')) {
+                showNotification('Admin analytics panel activated', 'info');
+            }
+        });
+
+        // --- KICK IT OFF ---
+        initializeTool();
 
     });
     </script>
