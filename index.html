@@ -134,7 +134,7 @@
         /* Print-specific styles */
         @media print {
             /* Hide elements that are not part of the results page */
-            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator, #admin-panel {
+            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button, #notification-container, #progress-indicator {
                 display: none !important;
             }
             
@@ -752,7 +752,7 @@
             sessionData.finalRecommendations = finalRecommendations;
             sessionData.ownedSolutions = ownedSolutions;
             
-            showNotification('Recommendations generated! 🎉', 'success');
+            showNotification('Recommendations generated! �', 'success');
             goToStep(6);
         }
         
@@ -849,3 +849,4 @@
     </script>
 </body>
 </html>
+�
