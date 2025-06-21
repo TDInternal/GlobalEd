@@ -87,25 +87,52 @@
 
         /* Print-specific styles */
         @media print {
-            body * {
-                visibility: hidden;
+            /* Hide elements that are not part of the results page */
+            body > header, .wizard-step:not(#step6), #results-actions, #results-back-button {
+                display: none !important;
             }
-            #step6, #step6 * {
-                visibility: visible;
-            }
-            #step6 {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            #results-actions, #results-back-button {
-                display: none;
-            }
-             .card-hover, .bg-white {
+            
+            /* Ensure the results step is visible and takes up the full space */
+            main, #solutionFinder, #step6 {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
                 box-shadow: none !important;
-                border: 1px solid #ccc;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                min-height: auto !important;
             }
+            
+            #solutionFinder {
+                padding: 1rem !important; /* Add some padding back for content spacing */
+            }
+
+            /* Improve page break behavior to keep content blocks together */
+            #value-proposition-container, #barrier-responses-container, #barrier-responses > div, .grid > div {
+                break-inside: avoid;
+            }
+            
+            /* General print typography for better readability */
+            body {
+                background-color: #fff !important;
+            }
+            
+            h1, h2, h3, h4, p, li, label, a {
+                color: #000 !important;
+            }
+            
+            .bg-blue-50 {
+                background-color: #f0f9ff !important;
+                border-color: #00aeef !important;
+            }
+
+            .text-td-blue { color: #00aeef !important; }
+            .text-td-green { color: #8dc73f !important; }
+
+            /* Ensure SVG icons print and links are styled for print */
+            svg { stroke: currentColor !important; }
+            a { text-decoration: none; }
         }
     </style>
 </head>
@@ -251,7 +278,7 @@
             'Dashboards': { name: 'Dashboards', icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />', description: 'Transform your data into actionable insights by tracking enrollment trends, diversity metrics, risk assessments, and program performance across all international initiatives.', solves: 'Transform raw data into visual reports to demonstrate ROI and inform strategy.', color: 'text-td-green', url: 'https://www.terradotta.com/dashboards.html', category: 'data_intelligence', categoryTitle: 'Data Intelligence & Reporting' } 
         };
         const roles = { 'avp': 'Associate Vice President (AVP) for Global Education/International Affairs', 'isss_director': 'Director of International Student & Scholar Services (ISSS)', 'sa_director': 'Director of Study Abroad/Education Abroad', 'pdso_dso': 'Principal Designated School Official (PDSO)/Designated School Official (DSO)', 'advisor': 'International Student Advisor', 'recruiter': 'International Recruitment Officer', 'risk': 'Risk Management/Legal Affairs', 'liaison': 'Academic Department Liaison', 'other': 'Other' };
-        const challengesByRole = { 'avp': [ { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] }, { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] }, { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] } ], 'isss_director': [ { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] }, { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] }, { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] }, { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] } ], 'sa_director': [ { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] }, { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] }, { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']} ], 'pdso_dso': [ { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] }, { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] }, { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] }, { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] } ], 'advisor': [ { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] }, { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] }, { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] }, { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] } ], 
+        const challengesByRole = { 'avp': [ { id: 'avp_c1', text: 'Struggling to demonstrate the ROI and impact of your global initiatives?', recommends: ['Dashboards'] }, { id: 'avp_c2', text: 'Looking for ways to increase your institution\'s global visibility and brand?', recommends: ['Engage', 'Agreements Management'] }, { id: 'avp_c3', text: 'Concerned about ensuring compliance and managing liability for all institutional travel?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'avp_c4', text: 'Finding it difficult to manage coordination between multiple departments?', recommends: ['Agreements Management', 'Study Abroad', 'ISSS'] } ], 'isss_director': [ { id: 'isss_dir_c1', text: 'Tasked with ensuring compliance with constantly changing federal regulations?', recommends: ['ISSS'] }, { id: 'isss_dir_c2', text: 'Need a better way to facilitate student enrollment and guide immigration processes?', recommends: ['ISSS', 'Engage'] }, { id: 'isss_dir_c3', text: 'Finding it hard to track and report on your international student populations?', recommends: ['Dashboards'] }, { id: 'isss_dir_c4', text: 'Is coordinating or having visibility into international student and scholar travel a challenge?', recommends: ['Travel Registry'] } ], 'sa_director': [ { id: 'sa_dir_c1', text: 'Is managing complex program partnerships and provider relationships a major time sink?', recommends: ['Agreements Management'] }, { id: 'sa_dir_c2', text: 'Focused on ensuring student safety and managing institutional liability for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'sa_dir_c3', text: 'Need to demonstrate program effectiveness and track student learning outcomes?', recommends: ['Dashboards'] }, { id: 'sa_dir_c4', text: 'Trying to grow participation by improving how you recruit for and promote programs?', recommends: ['Study Abroad', 'Engage']} , { id: 'sa_dir_c5', text: 'Is collecting application fees or program deposits a manual and time-consuming process?', recommends: ['Payment Gateway'] } ], 'pdso_dso': [ { id: 'pdso_c1', text: 'Worried about updating SEVIS records accurately and within strict legal time limits?', recommends: ['ISSS'] }, { id: 'pdso_c2', text: 'Concerned about mitigating the risk of losing your institutional SEVIS certification?', recommends: ['ISSS', 'Dashboards'] }, { id: 'pdso_c3', text: 'Need a reliable way to ensure both individual and institutional compliance with federal law?', recommends: ['ISSS'] }, { id: 'pdso_c4', text: 'Need a comprehensive way to ensure all institutional travel complies with university policy?', recommends: ['Travel Registry'] } ], 'advisor': [ { id: 'adv_c1', text: 'Overwhelmed with processing documents like F-1 visas and work permits?', recommends: ['ISSS'] }, { id: 'adv_c2', text: 'Struggling to manage heavy caseloads and address complex student needs effectively?', recommends: ['ISSS', 'Dashboards'] }, { id: 'adv_c3', text: 'Finding it difficult to automate routine communications so you can focus on students?', recommends: ['Engage'] }, { id: 'adv_c4', text: 'Do you need visibility into your advisees\' travel plans for better support and safety?', recommends: ['Travel Registry', 'Study Abroad'] } ], 
             'recruiter': [ { id: 'rec_c1', text: 'Need to streamline recruitment campaigns and track prospect engagement?', recommends: ['Engage'] }, { id: 'rec_c2', text: 'Looking for better ways to measure conversion rates from inquiry to applicant?', recommends: ['Dashboards', 'Engage'] }, { id: 'rec_c3', text: 'Struggling to manage recruitment partnerships and agent relationships?', recommends: ['Agreements Management'] }],
             'risk': [ { id: 'risk_c1', text: 'Need a comprehensive duty of care and liability management solution for all travelers?', recommends: ['Travel Registry', 'AlertTraveler®'] }, { id: 'risk_c2', text: 'Looking for a centralized system for contract and international partnership oversight?', recommends: ['Agreements Management'] }, { id: 'risk_c3', text: 'Need a better way to report on risk and compliance across the institution?', recommends: ['Dashboards'] }],
             'liaison': [ { id: 'lia_c1', text: 'Need tools to help manage faculty-led programs and their academic integration?', recommends: ['Study Abroad'] }, { id: 'lia_c2', text: 'Do you need departmental access for supporting international students and scholars?', recommends: ['ISSS'] }, { id: 'lia_c3', text: 'Looking for a way to track your department\'s student and faculty travel?', recommends: ['Travel Registry'] }],
