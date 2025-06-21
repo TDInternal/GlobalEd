@@ -416,6 +416,7 @@
         let selectedDirectorEmail = null;
         let sessionData = {};
         let isNewUserPath = false;
+        let isInternationalUser = false;
 
         // --- NOTIFICATION SYSTEM ---
         function showNotification(message, type = 'info', duration = 3000) {
@@ -533,6 +534,7 @@
                 completed: false
             };
             isNewUserPath = false;
+            isInternationalUser = false;
             updateProgress(1);
         }
         
@@ -550,6 +552,7 @@
         // --- UI INTERACTION LISTENERS ---
         document.querySelectorAll('input[name="location"]').forEach(radio => {
             radio.addEventListener('change', (event) => {
+                isInternationalUser = event.target.value === 'intl';
                 if (event.target.value === 'us') {
                     stateDropdownContainer.classList.remove('hidden');
                 } else {
@@ -593,6 +596,7 @@
                 trackSelection('state', stateDropdown.value);
             }
             locationError.classList.add('hidden');
+            setupStep2();
             goToStep(2);
         });
 
@@ -605,6 +609,7 @@
                 return; 
             }
             roleError.classList.add('hidden');
+            setupStep3();
             goToStep(3);
         });
 
@@ -624,6 +629,23 @@
         document.getElementById('back-btn-5').addEventListener('click', () => goToStep(4));
         document.getElementById('results-btn').addEventListener('click', showResults);
         
+        function setupStep2() {
+            const rolesToHide = ['isss_director', 'pdso_dso', 'advisor'];
+            rolesToHide.forEach(roleKey => {
+                const roleInput = document.querySelector(`input[value="${roleKey}"]`);
+                if (roleInput) {
+                    roleInput.parentElement.style.display = isInternationalUser ? 'none' : 'flex';
+                }
+            });
+        }
+        
+        function setupStep3() {
+            const isssSolutionCheckbox = document.querySelector('input[value="ISSS"]');
+            if(isssSolutionCheckbox){
+                 isssSolutionCheckbox.parentElement.style.display = isInternationalUser ? 'none' : 'flex';
+            }
+        }
+
         function populateChallenges() {
             challengesContainer.innerHTML = '';
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
@@ -631,14 +653,21 @@
             if (isNewUserPath) {
                 challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
                 challengesPrompt.textContent = "What areas of Global Education are you most focused on?";
-                const focusAreas = focusAreasByRole[selectedRole] || focusAreasByRole['default'];
+                let focusAreas = focusAreasByRole[selectedRole] || focusAreasByRole['default'];
+                if (isInternationalUser) {
+                    focusAreas = focusAreas.filter(area => !area.recommends.includes('ISSS'));
+                }
                 focusAreas.forEach(area => {
                     challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
                 });
             } else {
                 challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
                 challengesPrompt.textContent = "Based on your role, what are your biggest challenges right now? Select all that apply.";
-                const challengesForRole = challengesByRole[selectedRole];
+                let challengesForRole = challengesByRole[selectedRole];
+                
+                if (isInternationalUser) {
+                    challengesForRole = challengesForRole.filter(c => !c.recommends.includes('ISSS'));
+                }
             
                 challengesForRole.forEach(challenge => { 
                     challengesContainer.appendChild(createCheckbox(challenge.id, 'challenges', challenge.id, challenge.text)); 
