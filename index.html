@@ -205,7 +205,7 @@
                 <div id="barrier-responses-container" class="mb-8 hidden"><h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">Addressing Your Concerns</h3><div id="barrier-responses" class="space-y-6"></div></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12"><div><h3 class="font-bold text-xl text-slate-700 mb-4 text-center">Your Current Ecosystem</h3><div id="currentResults" class="space-y-4"></div></div><div><h3 class="font-bold text-xl text-td-green mb-4 text-center">Your Recommended Additions</h3><div id="recommendedResults" class="space-y-4"></div></div></div>
                 <hr class="my-10 border-slate-200">
-                <div><h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">Now you will be able to...</h3><ul id="benefits" class="benefits-list text-slate-600 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2"></ul></div>
+                <div><h3 class="font-bold text-2xl text-slate-800 mb-6 text-center">Now your campus or your office will be able to...</h3><ul id="benefits" class="benefits-list text-slate-600 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2"></ul></div>
                 <div id="results-actions" class="mt-12 text-center space-y-4">
                     <h3 class="text-2xl font-bold text-slate-800">Share Your Results & Next Steps</h3>
                     <div class="flex flex-wrap justify-center items-center gap-4 pt-4">
@@ -450,7 +450,7 @@
                     body += `${solutions[categorizedRecs[category][0]].categoryTitle}\r\n`;
                     categorizedRecs[category].forEach(key => {
                          const solution = solutions[key];
-                         body += `${solution.name} (${solution.url}) - ${solution.description}\r\n`;
+                         body += `${solution.name} - ${solution.description}\r\n`;
                     });
                     body += '\r\n';
                 }
