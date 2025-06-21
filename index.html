@@ -484,6 +484,8 @@
             window.location.href = `mailto:${selectedDirectorEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         });
         
+        document.getElementById('back-btn-6').addEventListener('click', () => goToStep(5));
+
     });
     </script>
 </body>
