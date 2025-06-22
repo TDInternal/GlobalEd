@@ -232,8 +232,8 @@
                     </div>
                     <div id="state-dropdown-container" class="ml-8 mt-2 hidden">
                          <select id="state-dropdown" class="w-full max-w-xs p-2 border border-gray-300 rounded-lg focus:ring-td-blue focus:border-td-blue">
-                            <option value="">Select your state...</option>
-                        </select>
+                             <option value="">Select your state...</option>
+                         </select>
                     </div>
                     <div class="flex items-start">
                         <input id="location-intl" name="location" type="radio" value="intl" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
@@ -256,8 +256,8 @@
                 <div class="mt-10 flex justify-between">
                      <button id="back-btn-2" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
                     <div class="text-right">
-                        <div id="role-error" class="text-red-500 text-sm mb-2 hidden">Please select a role to continue.</div>
-                        <button id="next-btn-2" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
+                         <div id="role-error" class="text-red-500 text-sm mb-2 hidden">Please select a role to continue.</div>
+                         <button id="next-btn-2" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
                     </div>
                 </div>
             </div>
@@ -281,7 +281,71 @@
                 </div>
             </div>
 
-            <!-- Step 4: Your Challenges -->
+            <!-- Step 3.5: Competitor Focus -->
+            <div id="step-competitor-focus" class="wizard-step hidden">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Which office is your main focus right now?</h2>
+                <p class="text-slate-500 mb-8">This will help us tailor the next questions to your specific needs.</p>
+                <div id="competitor-focus-options" class="space-y-4">
+                    <div class="flex items-start">
+                        <input id="focus-study-abroad" name="competitor_focus" type="radio" value="study_abroad" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
+                        <label for="focus-study-abroad" class="ml-3 text-md text-slate-600">Study Abroad</label>
+                    </div>
+                    <div class="flex items-start">
+                        <input id="focus-isss" name="competitor_focus" type="radio" value="isss" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
+                        <label for="focus-isss" class="ml-3 text-md text-slate-600">ISSS</label>
+                    </div>
+                    <div class="flex items-start">
+                        <input id="focus-travel-risk" name="competitor_focus" type="radio" value="travel_risk" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
+                        <label for="focus-travel-risk" class="ml-3 text-md text-slate-600">Travel Risk</label>
+                    </div>
+                    <div class="flex items-start">
+                        <input id="focus-all" name="competitor_focus" type="radio" value="all" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
+                        <label for="focus-all" class="ml-3 text-md text-slate-600">All Global Engagement</label>
+                    </div>
+                </div>
+                <div class="mt-10 flex justify-between">
+                    <button id="back-btn-cf" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <div class="text-right">
+                        <div id="competitor-focus-error" class="text-red-500 text-sm mb-2 hidden">Please select a focus area to continue.</div>
+                        <button id="next-btn-cf" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3.6: Study Abroad Pain Points -->
+            <div id="step-sa-pains" class="wizard-step hidden">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Study Abroad Challenges</h2>
+                <p class="text-slate-500 mb-8">What are the biggest challenges you're facing with your current Study Abroad software?</p>
+                <div id="sa-pains-container" class="space-y-4"></div>
+                <div class="mt-10 flex justify-between">
+                    <button id="back-btn-sap" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <button id="next-btn-sap" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 3.7: ISSS Pain Points -->
+            <div id="step-isss-pains" class="wizard-step hidden">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">ISSS Challenges</h2>
+                <p class="text-slate-500 mb-8">What are the biggest challenges you're facing with your current ISSS software?</p>
+                <div id="isss-pains-container" class="space-y-4"></div>
+                <div class="mt-10 flex justify-between">
+                    <button id="back-btn-issp" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <button id="next-btn-issp" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 3.8: Travel Risk Pain Points -->
+            <div id="step-tr-pains" class="wizard-step hidden">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Travel Risk Challenges</h2>
+                <p class="text-slate-500 mb-8">What are the biggest challenges you're facing with your current Travel Risk solution?</p>
+                <div id="tr-pains-container" class="space-y-4"></div>
+                <div class="mt-10 flex justify-between">
+                    <button id="back-btn-trp" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-8 rounded-lg transition-all">&larr; Back</button>
+                    <button id="next-btn-trp" class="bg-td-blue hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-all">Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Your Challenges (Placeholder for non-competitor path) -->
             <div id="step4" class="wizard-step hidden">
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Step 4: Your Challenges</h2>
                 <p id="challenges-prompt" class="text-slate-500 mb-8">Based on your role, what are your biggest challenges right now? Select all that apply.</p>
@@ -395,23 +459,45 @@
         };
 
         const competitorPainPoints = [
-             { id: 'pain_reminders', text: 'Limited automation for applicant reminders.', recommends: ['Study Abroad', 'Engage'], advantage: 'Unlike other vendors, Terra Dotta offers robust automation for applicant communication, enabling tailored reminders and notifications that efficiently guide applicants through the process. This saves staff time, ensures timely, personalized engagement, and drives higher application completion rates.'},
-             { id: 'pain_budget', text: 'Inability to build custom budget sheets within the software.', recommends: ['Study Abroad'], advantage: 'Terra Dotta’s budget sheets offer a fully integrated platform, connecting financial data with program management workflows. With real-time updates, customizable features, and clear cost breakdowns for students, it streamlines collaboration and eliminates manual processes.' },
-             { id: 'pain_audit', text: 'Difficulty auditing or tracking applicant progress.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s progress audit provides real-time snapshots of applicant progress, offering superior visibility and accountability. It enables staff to track progress, address bottlenecks, and manage workflows efficiently, ensuring a smoother experience.' },
-             { id: 'pain_batch', text: 'Limited ability to perform actions on applications in batch.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s batch actions offer robust features for managing high application volumes efficiently. It enables bulk updates, communications, and data changes, saving time, reducing manual effort, and ensuring smooth, scalable workflows during peak periods.' },
-             { id: 'pain_import', text: 'Inability to import applications in bulk.', recommends: ['Study Abroad'], advantage: 'Terra Dotta’s application import feature enables efficient mass imports, saving time and reducing manual effort. Primarily used during implementation, it streamlines operations and supports high-volume data management.' },
-             { id: 'pain_exchange', text: 'Difficulty tracking exchange balances without a separate product.', recommends: ['Agreements Management', 'Study Abroad'], advantage: 'Terra Dotta’s exchange balance functionality streamlines agreement management by tracking exchange student numbers directly within its Study Abroad platform, providing integrated tools for greater visibility, accountability, and simplified partnership management.' },
-             { id: 'pain_risk', text: 'An inadequate traveler safety and risk management solution.', recommends: ['AlertTraveler®'], advantage: 'Unlike basic check-in tools, AlertTraveler® offers a comprehensive safety solution with real-time alerts, location tracking, and direct communication. It elevates Terra Dotta beyond application management, providing unmatched duty-of-care capabilities.' },
-             { id: 'pain_admins', text: 'Strict limits on administrator accounts and permissions.', recommends: [], advantage: 'Terra Dotta provides unmatched flexibility in user and permission settings, allowing institutions to tailor the system to their processes. Unlike vendors with rigid limits, Terra Dotta adapts to your workflows, ensuring seamless integration and enhanced efficiency.' },
-             { id: 'pain_cost', text: 'Unpredictable costs and being "nickeled and dimed" for add-ons.', recommends: [], advantage: 'Terra Dotta offers comprehensive solutions with bundled services and features, providing transparent, predictable pricing. While other vendors may upsell for critical features like SSO or basic integrations, Terra Dotta includes them.' },
-             { id: 'pain_payments', text: 'A disconnected or manual payment collection process.', recommends: ['Payment Gateway'], advantage: 'Terra Dotta’s payment gateway integrations are more robust and seamless than others, offering fully integrated solutions that simplify processes for administrators and applicants by automating payment status updates.' },
-             { id: 'pain_data', text: 'Inability to create custom reports or visualize data effectively.', recommends: ['Dashboards'], advantage: 'Terra Dotta’s advanced analytics and visualization tools offer customizable reporting without relying on external tools like Excel. It provides real-time insights in a centralized platform, empowering institutions to make data-driven decisions easily.' },
-             { id: 'pain_forms', text: 'Losing historical data when editing forms.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s form management preserves historical data by versioning. When you edit a form, it creates a new version, ensuring you never lose past submission data—a significant advantage for data retention and quality of life.' },
-             { id: 'pain_site', text: 'No option for a public-facing, informational website.', recommends: ['Study Abroad'], advantage: 'Terra Dotta allows partners to have a public-facing website to inform stakeholders, becoming a key part of the recruitment and information-sharing process and eliminating a barrier for prospective students.' }
+             { id: 'pain_reminders', text: 'Limited automation for applicant reminders.', recommends: ['Study Abroad', 'Engage'], advantage: 'Unlike other vendors, Terra Dotta offers robust automation for applicant communication, enabling tailored reminders and notifications that efficiently guide applicants through the process. This saves staff time, ensures timely, personalized engagement, and drives higher application completion rates.', focus: ['study_abroad', 'all']},
+             { id: 'pain_budget', text: 'Inability to build custom budget sheets within the software.', recommends: ['Study Abroad'], advantage: 'Terra Dotta’s budget sheets offer a fully integrated platform, connecting financial data with program management workflows. With real-time updates, customizable features, and clear cost breakdowns for students, it streamlines collaboration and eliminates manual processes.', focus: ['study_abroad', 'all'] },
+             { id: 'pain_audit', text: 'Difficulty auditing or tracking applicant progress.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s progress audit provides real-time snapshots of applicant progress, offering superior visibility and accountability. It enables staff to track progress, address bottlenecks, and manage workflows efficiently, ensuring a smoother experience.', focus: ['study_abroad', 'isss', 'all'] },
+             { id: 'pain_batch', text: 'Limited ability to perform actions on applications in batch.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s batch actions offer robust features for managing high application volumes efficiently. It enables bulk updates, communications, and data changes, saving time, reducing manual effort, and ensuring smooth, scalable workflows during peak periods.', focus: ['study_abroad', 'isss', 'all'] },
+             { id: 'pain_import', text: 'Inability to import applications in bulk.', recommends: ['Study Abroad'], advantage: 'Terra Dotta’s application import feature enables efficient mass imports, saving time and reducing manual effort. Primarily used during implementation, it streamlines operations and supports high-volume data management.', focus: ['study_abroad', 'all'] },
+             { id: 'pain_exchange', text: 'Difficulty tracking exchange balances without a separate product.', recommends: ['Agreements Management', 'Study Abroad'], advantage: 'Terra Dotta’s exchange balance functionality streamlines agreement management by tracking exchange student numbers directly within its Study Abroad platform, providing integrated tools for greater visibility, accountability, and simplified partnership management.', focus: ['study_abroad', 'all'] },
+             { id: 'pain_risk', text: 'An inadequate traveler safety and risk management solution.', recommends: ['AlertTraveler®'], advantage: 'Unlike basic check-in tools, AlertTraveler® offers a comprehensive safety solution with real-time alerts, location tracking, and direct communication. It elevates Terra Dotta beyond application management, providing unmatched duty-of-care capabilities.', focus: ['travel_risk', 'all'] },
+             { id: 'pain_admins', text: 'Strict limits on administrator accounts and permissions.', recommends: [], advantage: 'Terra Dotta provides unmatched flexibility in user and permission settings, allowing institutions to tailor the system to their processes. Unlike vendors with rigid limits, Terra Dotta adapts to your workflows, ensuring seamless integration and enhanced efficiency.', focus: ['study_abroad', 'isss', 'travel_risk', 'all'] },
+             { id: 'pain_cost', text: 'Unpredictable costs and being "nickeled and dimed" for add-ons.', recommends: [], advantage: 'Terra Dotta offers comprehensive solutions with bundled services and features, providing transparent, predictable pricing. While other vendors may upsell for critical features like SSO or basic integrations, Terra Dotta includes them.', focus: ['study_abroad', 'isss', 'travel_risk', 'all'] },
+             { id: 'pain_payments', text: 'A disconnected or manual payment collection process.', recommends: ['Payment Gateway'], advantage: 'Terra Dotta’s payment gateway integrations are more robust and seamless than others, offering fully integrated solutions that simplify processes for administrators and applicants by automating payment status updates.', focus: ['study_abroad', 'all'] },
+             { id: 'pain_data', text: 'Inability to create custom reports or visualize data effectively.', recommends: ['Dashboards'], advantage: 'Terra Dotta’s advanced analytics and visualization tools offer customizable reporting without relying on external tools like Excel. It provides real-time insights in a centralized platform, empowering institutions to make data-driven decisions easily.', focus: ['study_abroad', 'isss', 'travel_risk', 'all'] },
+             { id: 'pain_forms', text: 'Losing historical data when editing forms.', recommends: ['Study Abroad', 'ISSS'], advantage: 'Terra Dotta’s form management preserves historical data by versioning. When you edit a form, it creates a new version, ensuring you never lose past submission data—a significant advantage for data retention and quality of life.', focus: ['study_abroad', 'isss', 'all'] },
+             { id: 'pain_site', text: 'No option for a public-facing, informational website.', recommends: ['Study Abroad'], advantage: 'Terra Dotta allows partners to have a public-facing website to inform stakeholders, becoming a key part of the recruitment and information-sharing process and eliminating a barrier for prospective students.', focus: ['study_abroad', 'all'] }
+        ];
+
+        const studyAbroadPainPoints = [
+            { id: 'sa_pain_crises', text: 'Struggling to maintain real-time visibility into student whereabouts during international crises?', recommends: ['AlertTraveler®'], advantage: 'AlertTraveler provides a comprehensive safety solution with real-time alerts and location tracking, ensuring you can support your students effectively during emergencies.' },
+            { id: 'sa_pain_bottlenecks', text: 'Struggling to identify application bottlenecks before they impact enrollment targets?', recommends: ['Engage'], advantage: 'Engage helps you manage the full student journey, from prospect to applicant, giving you the insights to identify and resolve bottlenecks early.' },
+            { id: 'sa_pain_roi', text: 'Struggling to demonstrate the ROI and impact of your global education initiatives?', recommends: ['Dashboards'], advantage: 'Dashboards transform your program data into compelling visual reports, making it easy to demonstrate value and strategic impact to stakeholders.' },
+            { id: 'sa_pain_pipeline', text: 'Finding it impossible to get real-time visibility into your study abroad pipeline?', recommends: ['Dashboards', 'Study Abroad'], advantage: 'Terra Dotta provides a unified platform to track your entire study abroad pipeline, from initial interest to post-decision, with powerful reporting to give you a clear, real-time view.'},
+            { id: 'sa_pain_cost', text: 'Want to lower your cost for Study Abroad software?', recommends: [], advantage: 'Terra Dotta offers predictable, transparent pricing with bundled services, providing a comprehensive solution that avoids unexpected costs and delivers a lower total cost of ownership compared to many vendors.'}
+        ];
+
+        const isssPainPoints = [
+            { id: 'isss_pain_sevis', text: 'Struggling to manage SEVIS compliance deadlines and avoid data errors?', recommends: ['ISSS'], advantage: 'Terra Dotta for ISSS provides robust validation and batching tools to ensure SEVIS compliance and reduce the risk of costly errors.'},
+            { id: 'isss_pain_paperwork', text: 'Feeling overwhelmed by the volume of student and scholar paperwork?', recommends: ['ISSS'], advantage: 'Digitize your forms and workflows with Terra Dotta, automating tasks and providing a central hub for all student and scholar data, significantly reducing administrative burden.'},
+            { id: 'isss_pain_reporting', text: 'Finding it difficult to track and report on your international populations effectively?', recommends: ['Dashboards'], advantage: 'Dashboards for ISSS allows you to visualize your data, track trends, and generate compelling reports on your international populations with ease.'},
+            { id: 'isss_pain_disconnected', text: 'Is your current system disconnected from your study abroad or travel risk solutions?', recommends: ['Study Abroad', 'Travel Registry'], advantage: 'Terra Dotta\'s unified platform integrates ISSS, Study Abroad, and Travel Risk, providing a single source of truth and breaking down data silos across campus.'}
+        ];
+
+        const travelRiskPainPoints = [
+            { id: 'tr_pain_duty', text: 'Concerned about fulfilling your institution\'s Duty of Care for all travelers?', recommends: ['AlertTraveler®', 'Travel Registry'], advantage: 'Terra Dotta provides a comprehensive duty of care suite, combining trip registration with real-time alerts and a mobile app to keep your travelers safe and informed.' },
+            { id: 'tr_pain_locate', text: 'Finding it difficult to locate travelers quickly during an emergency?', recommends: ['AlertTraveler®'], advantage: 'With GPS check-ins and itinerary-based location tracking, AlertTraveler allows you to instantly locate and communicate with affected travelers during a crisis.' },
+            { id: 'tr_pain_registration', text: 'Struggling to get travelers to register their trips in a timely manner?', recommends: ['Travel Registry'], advantage: 'Our Travel Registry streamlines the process with itinerary parsing and simple web forms, increasing compliance and ensuring you have a complete picture of institutional travel.' },
+            { id: 'tr_pain_communication', text: 'Lacking a centralized system for all travel communication and alerts?', recommends: ['AlertTraveler®'], advantage: 'AlertTraveler serves as your central command for travel communications, allowing you to send targeted alerts and safety information to specific groups of travelers.' }
         ];
         
         const barriers = [ { id: 'barrier_cost', text: 'Overall cost and budget constraints.' }, { id: 'barrier_implementation', text: 'The time and effort required for implementation.' }, { id: 'barrier_buy_in', text: 'Getting internal buy-in from stakeholders and leadership.' }, { id: 'barrier_it', text: 'Limited IT department bandwidth and resources.' }, { id: 'barrier_training', text: 'Concerns about training users and ensuring adoption.' } ];
-        const barrierResponses = { 'barrier_cost': { title: 'Regarding Cost & Budget', text: 'We understand budget is a primary concern. Terra Dotta\'s platform approach offers significant long-term ROI by consolidating systems, automating manual tasks to free up staff time, and mitigating costly compliance risks. We offer flexible pricing and can work with you to build a business case that demonstrates clear value to your leadership.' }, 'barrier_implementation': { title: 'Regarding Implementation', text: 'Our dedicated implementation team partners with you every step of the way. We use a proven methodology to ensure a smooth transition, from data migration to system configuration, minimizing disruption to your office and getting you up and running efficiently.' }, 'barrier_buy_in': { title: 'Regarding Internal Buy-In', text: 'Getting everyone on board is key. Our solutions provide clear benefits for every role, from advisors to leadership. The Dashboards tool is specifically designed to help you demonstrate the impact and success of your global programs to stakeholders, making the case for investment clear and compelling.' }, 'barrier_it': { title: 'Regarding IT Bandwidth', text: 'We know IT resources are precious. As a cloud-hosted solution, Terra Dotta manages the infrastructure, security, and updates, significantly reducing the burden on your campus IT team. Our integrations are designed to work seamlessly with existing campus systems.' }, 'barrier_training': { title: 'Regarding Training & Adoption', text: 'User adoption is critical for success. We provide comprehensive training resources, including live sessions, on-demand videos, and detailed documentation. Our intuitive user interface is designed to be user-friendly, ensuring your team can leverage the full power of the platform quickly.' } };
+        const barrierResponses = { 'barrier_cost': { title: 'Regarding Cost & Budget', text: 'We understand budget is a primary concern. Terra Dotta\'s platform approach offers significant long-term ROI by consolidating systems, automating manual tasks to free up staff time, and mitigating costly compliance risks. We offer flexible pricing and can work with you to build a business case that demonstrates clear value to your leadership.' }, 'barrier_implementation': { title: 'Regarding Implementation', text: 'Our dedicated implementation team partners with you every step of the way. We use a proven methodology to ensure a smooth transition, from data migration to system configuration, minimizing disruption to your office and get you up and running efficiently.' }, 'barrier_buy_in': { title: 'Regarding Internal Buy-In', text: 'Getting everyone on board is key. Our solutions provide clear benefits for every role, from advisors to leadership. The Dashboards tool is specifically designed to help you demonstrate the impact and success of your global programs to stakeholders, making the case for investment clear and compelling.' }, 'barrier_it': { title: 'Regarding IT Bandwidth', text: 'We know IT resources are precious. As a cloud-hosted solution, Terra Dotta manages the infrastructure, security, and updates, significantly reducing the burden on your campus IT team. Our integrations are designed to work seamlessly with existing campus systems.' }, 'barrier_training': { title: 'Regarding Training & Adoption', text: 'User adoption is critical for success. We provide comprehensive training resources, including live sessions, on-demand videos, and detailed documentation. Our intuitive user interface is designed to be user-friendly, ensuring your team can leverage the full power of the platform quickly.' } };
         const valuePropositionByRole = { 'avp': 'AVPs can demonstrate measurable progress toward internationalization goals while ensuring institutional safety and compliance.', 'isss_director': 'Dramatically reduces administrative burden while ensuring 100% SEVIS compliance and enhancing the international student experience.', 'sa_director': 'Enables growth in study abroad participation while maintaining the highest safety standards and operational efficiency.', 'pdso_dso': 'Eliminates SEVIS compliance anxiety through automated workflows and fail-safes, protecting institutional certification while reducing administrative burden.', 'advisor': 'Empowers advisors to focus on high-value student interactions while automating routine tasks and ensuring compliance.', 'recruiter': 'Streamline recruitment campaigns, track prospect engagement, and measure conversion rates to boost international enrollment.', 'risk': 'Provides a comprehensive duty of care and liability management solution for all institutional travel, ensuring traveler safety and centralized oversight.', 'liaison': 'Empowers academic departments with tools for faculty-led program management and seamless support for international students and scholars.', 'other': 'Terra Dotta\'s comprehensive platform addresses core challenges across global education, from strategic leadership to day-to-day compliance.' };
         const usStates = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
         const directorEmailsByState = { 'Alaska': 'jeralyn.woodall@terradotta.com', 'Alabama': 'laura.matrazzo@terradotta.com', 'Arkansas': 'jeralyn.woodall@terradotta.com', 'Arizona': 'chelsea.curtis@terradotta.com', 'California': 'chelsea.curtis@terradotta.com', 'Colorado': 'jeralyn.woodall@terradotta.com', 'Connecticut': 'george.hogan@terradotta.com', 'District of Columbia': 'laura.matrazzo@terradotta.com', 'Delaware': 'george.hogan@terradotta.com', 'Florida': 'laura.matrazzo@terradotta.com', 'Georgia': 'laura.matrazzo@terradotta.com', 'Hawaii': 'chelsea.curtis@terradotta.com', 'Iowa': 'frank.merendino@terradotta.com', 'Idaho': 'chelsea.curtis@terradotta.com', 'Illinois': 'frank.merendino@terradotta.com', 'Indiana': 'frank.merendino@terradotta.com', 'Kansas': 'jeralyn.woodall@terradotta.com', 'Kentucky': 'frank.merendino@terradotta.com', 'Louisiana': 'jeralyn.woodall@terradotta.com', 'Massachusetts': 'george.hogan@terradotta.com', 'Maryland': 'george.hogan@terradotta.com', 'Maine': 'george.hogan@terradotta.com', 'Michigan': 'frank.merendino@terradotta.com', 'Minnesota': 'frank.merendino@terradotta.com', 'Missouri': 'jeralyn.woodall@terradotta.com', 'Mississippi': 'laura.matrazzo@terradotta.com', 'Montana': 'chelsea.curtis@terradotta.com', 'North Carolina': 'laura.matrazzo@terradotta.com', 'North Dakota': 'jeralyn.woodall@terradotta.com', 'Nebraska': 'jeralyn.woodall@terradotta.com', 'New Hampshire': 'george.hogan@terradotta.com', 'New Jersey': 'george.hogan@terradotta.com', 'New Mexico': 'jeralyn.woodall@terradotta.com', 'Nevada': 'chelsea.curtis@terradotta.com', 'New York': 'george.hogan@terradotta.com', 'Ohio': 'frank.merendino@terradotta.com', 'Oklahoma': 'jeralyn.woodall@terradotta.com', 'Oregon': 'chelsea.curtis@terradotta.com', 'Pennsylvania': 'george.hogan@terradotta.com', 'Rhode Island': 'george.hogan@terradotta.com', 'South Carolina': 'laura.matrazzo@terradotta.com', 'South Dakota': 'jeralyn.woodall@terradotta.com', 'Tennessee': 'laura.matrazzo@terradotta.com', 'Texas': 'jeralyn.woodall@terradotta.com', 'Utah': 'chelsea.curtis@terradotta.com', 'Virginia': 'laura.matrazzo@terradotta.com', 'Vermont': 'george.hogan@terradotta.com', 'Washington': 'chelsea.curtis@terradotta.com', 'Wisconsin': 'frank.merendino@terradotta.com', 'West Virginia': 'laura.matrazzo@terradotta.com', 'Wyoming': 'chelsea.curtis@terradotta.com' };
@@ -440,6 +526,14 @@
         const noSolutionsBtn = document.getElementById('no-solutions-btn');
         const competitorBtn = document.getElementById('competitor-btn');
         const challengesPrompt = document.getElementById('challenges-prompt');
+        const competitorFocusStep = document.getElementById('step-competitor-focus');
+        const competitorFocusError = document.getElementById('competitor-focus-error');
+        const saPainsStep = document.getElementById('step-sa-pains');
+        const saPainsContainer = document.getElementById('sa-pains-container');
+        const isssPainsStep = document.getElementById('step-isss-pains');
+        const isssPainsContainer = document.getElementById('isss-pains-container');
+        const trPainsStep = document.getElementById('step-tr-pains');
+        const trPainsContainer = document.getElementById('tr-pains-container');
 
         let currentStep = 1;
         let selectedDirectorEmail = null;
@@ -447,6 +541,7 @@
         let isNewUserPath = false;
         let isCompetitorUserPath = false;
         let isInternationalUser = false;
+        let painPointPath = null; // Can be 'sap', 'issp', 'trp', or null
 
         // --- NOTIFICATION SYSTEM ---
         function showNotification(message, type = 'info', duration = 3000) {
@@ -519,7 +614,7 @@
             const div = document.createElement('div');
             div.className = 'flex items-start';
             div.innerHTML = `<input id="${id}" name="${name}" type="radio" value="${value}" class="custom-radio h-5 w-5 rounded-full border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
-                             <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>`;
+                                 <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>`;
             const input = div.querySelector('input');
             input.addEventListener('change', () => trackSelection(name, value));
             return div;
@@ -529,7 +624,7 @@
             const div = document.createElement('div');
             div.className = 'flex items-start';
             div.innerHTML = `<input id="${id}" name="${name}" type="checkbox" value="${value}" class="custom-checkbox h-5 w-5 rounded border-gray-300 text-td-blue focus:ring-td-blue flex-shrink-0 mt-1">
-                             <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>`;
+                                 <label for="${id}" class="ml-3 text-md text-slate-600">${labelText}</label>`;
             const input = div.querySelector('input');
             input.addEventListener('change', (event) => trackCheckboxSelection(name, value, event.target.checked));
             return div;
@@ -566,11 +661,16 @@
             isNewUserPath = false;
             isCompetitorUserPath = false;
             isInternationalUser = false;
+            painPointPath = null;
             updateProgress(1);
         }
         
+        function hideAllSteps() {
+            document.querySelectorAll('.wizard-step').forEach(s => s.classList.add('hidden'));
+        }
+
         function goToStep(stepNumber) { 
-            document.getElementById(`step${currentStep}`).classList.add('hidden'); 
+            hideAllSteps();
             document.getElementById(`step${stepNumber}`).classList.remove('hidden'); 
             currentStep = stepNumber; 
             updateProgress(stepNumber);
@@ -599,6 +699,7 @@
         noSolutionsBtn.addEventListener('click', () => {
             isNewUserPath = true;
             isCompetitorUserPath = false;
+            painPointPath = null;
             document.querySelectorAll('input[name="currentSolutions"]').forEach(cb => {
                 cb.checked = false;
                 trackCheckboxSelection('currentSolutions', cb.value, false);
@@ -610,12 +711,14 @@
         competitorBtn.addEventListener('click', () => {
             isNewUserPath = false;
             isCompetitorUserPath = true;
+            painPointPath = null;
+            trackSelection('userPath', 'competitor');
             document.querySelectorAll('input[name="currentSolutions"]').forEach(cb => {
                 cb.checked = false;
-                trackCheckboxSelection('currentSolutions', cb.value, false);
+                cb.dispatchEvent(new Event('change')); 
             });
-            populateChallenges();
-            goToStep(4);
+            hideAllSteps();
+            competitorFocusStep.classList.remove('hidden');
         });
         
         // --- NAVIGATION BUTTON LISTENERS ---
@@ -660,17 +763,85 @@
         document.getElementById('next-btn-3').addEventListener('click', () => {
             isNewUserPath = false;
             isCompetitorUserPath = false;
+            painPointPath = null;
             populateChallenges(); 
             goToStep(4);
         });
+        
+        document.getElementById('back-btn-cf').addEventListener('click', () => {
+            hideAllSteps();
+            document.getElementById('step3').classList.remove('hidden');
+            isCompetitorUserPath = false;
+        });
 
-        document.getElementById('back-btn-4').addEventListener('click', () => goToStep(3));
+        document.getElementById('next-btn-cf').addEventListener('click', () => {
+            const focusSelected = document.querySelector('input[name="competitor_focus"]:checked');
+            if (!focusSelected) {
+                competitorFocusError.classList.remove('hidden');
+                showNotification('Please select a focus area to continue.', 'error');
+                return;
+            }
+            competitorFocusError.classList.add('hidden');
+            trackSelection('competitor_focus', focusSelected.value);
+
+            hideAllSteps();
+            if (focusSelected.value === 'study_abroad') {
+                painPointPath = 'sap';
+                populateSAPains();
+                saPainsStep.classList.remove('hidden');
+            } else if (focusSelected.value === 'isss') {
+                painPointPath = 'issp';
+                populateISSSPains();
+                isssPainsStep.classList.remove('hidden');
+            } else if (focusSelected.value === 'travel_risk') {
+                painPointPath = 'trp';
+                populateTRPains();
+                trPainsStep.classList.remove('hidden');
+            } else if (focusSelected.value === 'all') {
+                painPointPath = 'all';
+                populateBarriers();
+                goToStep(5);
+            }
+        });
+
+        // Pain Point Step Navigation
+        document.getElementById('back-btn-sap').addEventListener('click', () => { hideAllSteps(); competitorFocusStep.classList.remove('hidden'); });
+        document.getElementById('next-btn-sap').addEventListener('click', () => { hideAllSteps(); populateBarriers(); goToStep(5); });
+        
+        document.getElementById('back-btn-issp').addEventListener('click', () => { hideAllSteps(); competitorFocusStep.classList.remove('hidden'); });
+        document.getElementById('next-btn-issp').addEventListener('click', () => { hideAllSteps(); populateBarriers(); goToStep(5); });
+
+        document.getElementById('back-btn-trp').addEventListener('click', () => { hideAllSteps(); competitorFocusStep.classList.remove('hidden'); });
+        document.getElementById('next-btn-trp').addEventListener('click', () => { hideAllSteps(); populateBarriers(); goToStep(5); });
+
+
+        document.getElementById('back-btn-4').addEventListener('click', () => {
+             // This step is now only for non-competitor paths
+            goToStep(3);
+        });
+
         document.getElementById('next-btn-4').addEventListener('click', () => {
+            painPointPath = null;
             populateBarriers();
             goToStep(5);
         });
         
-        document.getElementById('back-btn-5').addEventListener('click', () => goToStep(4));
+        document.getElementById('back-btn-5').addEventListener('click', () => {
+            hideAllSteps();
+            if (painPointPath === 'sap') {
+                saPainsStep.classList.remove('hidden');
+            } else if (painPointPath === 'issp') {
+                isssPainsStep.classList.remove('hidden');
+            } else if (painPointPath === 'trp') {
+                trPainsStep.classList.remove('hidden');
+            } else if (painPointPath === 'all') {
+                 competitorFocusStep.classList.remove('hidden');
+            }
+            else {
+                goToStep(4);
+            }
+        });
+        
         document.getElementById('results-btn').addEventListener('click', showResults);
         
         function setupStep2() {
@@ -690,12 +861,32 @@
             }
         }
 
+        function populateSAPains() {
+            saPainsContainer.innerHTML = '';
+            studyAbroadPainPoints.forEach(point => {
+                saPainsContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
+            });
+        }
+
+        function populateISSSPains() {
+            isssPainsContainer.innerHTML = '';
+            isssPainPoints.forEach(point => {
+                isssPainsContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
+            });
+        }
+
+        function populateTRPains() {
+            trPainsContainer.innerHTML = '';
+            travelRiskPainPoints.forEach(point => {
+                trPainsContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
+            });
+        }
+
         function populateChallenges() {
             challengesContainer.innerHTML = '';
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
             const step4Title = document.querySelector('#step4 h2');
             
-            // Reset to default
             challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
             step4Title.textContent = 'Your Challenges';
 
@@ -708,9 +899,9 @@
                  const avpFocusOrder = ['focus_avp_data', 'focus_avp_roi', 'focus_avp_risk', 'focus_avp_reputation', 'focus_avp_efficiency'];
                  const focusAreas = focusAreasByRole.avp.slice().sort((a,b) => avpFocusOrder.indexOf(a.id) - avpFocusOrder.indexOf(b.id));
                  focusAreas.forEach(area => {
-                    if (!isInternationalUser || !area.recommends.includes('ISSS')){
-                        challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
-                    }
+                     if (!isInternationalUser || !area.recommends.includes('ISSS')){
+                         challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
+                     }
                  });
 
             } else if (isNewUserPath) {
@@ -724,14 +915,18 @@
                     challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
                 });
             } else if (isCompetitorUserPath) {
-                 challengesPrompt.innerHTML = "If you use another vendor, we would love to understand your challenges. <br/> <span class='text-sm text-slate-400'>These are some of the known challenges with other vendors.</span>";
+                 challengesPrompt.innerHTML = "You mentioned using another vendor. What are your primary pain points? <br/> <span class='text-sm text-slate-400'>Select the challenges that resonate most with your experience.</span>";
+                 const selectedFocus = sessionData.selections['competitor_focus'];
                  let painPoints = competitorPainPoints;
+                 if (selectedFocus && selectedFocus !== 'all') {
+                     painPoints = competitorPainPoints.filter(p => p.focus.includes(selectedFocus));
+                 }
                  if (isInternationalUser) {
-                    painPoints = painPoints.filter(p => !p.recommends.includes('ISSS'));
+                     painPoints = painPoints.filter(p => !p.recommends.includes('ISSS'));
                  }
                  painPoints.forEach(point => {
-                    challengesContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
-                });
+                     challengesContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
+                 });
             } else {
                 challengesPrompt.textContent = "Based on your role, what are your biggest challenges right now? Select all that apply.";
                 let challengesForRole = challengesByRole[selectedRole];
@@ -776,10 +971,32 @@
             const selectedBarrierIds = Array.from(document.querySelectorAll('input[name="barriers"]:checked')).map(cb => cb.value);
             const selectedRole = document.querySelector('input[name="role"]:checked')?.value || 'other';
             
-            const allPossibleChallenges = [...Object.values(challengesByRole).flat(), ...Object.values(focusAreasByRole).flat(), ...competitorPainPoints];
+            const allPossibleChallenges = [...Object.values(challengesByRole).flat(), ...Object.values(focusAreasByRole).flat(), ...competitorPainPoints, ...studyAbroadPainPoints, ...isssPainPoints, ...travelRiskPainPoints];
 
             let recommendations = new Set();
             let advantageText = '';
+
+            // Add base recommendations from competitor focus selection
+            if (isCompetitorUserPath) {
+                const focus = sessionData.selections['competitor_focus'];
+                if (focus === 'study_abroad') {
+                    recommendations.add('Study Abroad');
+                } else if (focus === 'isss') {
+                    recommendations.add('ISSS');
+                } else if (focus === 'travel_risk') {
+                    recommendations.add('AlertTraveler®');
+                    recommendations.add('Travel Registry');
+                } else if (focus === 'all') {
+                    recommendations.add('Study Abroad');
+                    recommendations.add('ISSS');
+                    recommendations.add('Travel Registry');
+                    recommendations.add('AlertTraveler®');
+                    recommendations.add('Dashboards');
+                    recommendations.add('Agreements Management');
+                }
+            }
+            
+            // Add recommendations from selected challenges/pain points
             selectedChallengeIds.forEach(challengeId => { 
                 const challenge = allPossibleChallenges.find(p => p.id === challengeId); 
                 if (challenge) { 
@@ -819,7 +1036,7 @@
             } else if (selectedChallengeIds.length > 0) {
                 recommendedResultsContainer.innerHTML = `<div class="text-center p-8 border-2 border-dashed border-td-green rounded-lg bg-green-50"><h4 class="font-bold text-td-green mb-2">You're Covered!</h4><p class="text-slate-600">Based on the challenges you selected, your current solutions have you covered.</p></div>`;
             } else {
-                recommendedResultsContainer.innerHTML = `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">Select a challenge in Step 4 to see recommendations.</p>`;
+                recommendedResultsContainer.innerHTML = `<p class="text-slate-500 text-center p-8 border-2 border-dashed rounded-lg">Select a challenge to see recommendations.</p>`;
             }
 
             valuePropositionText.textContent = valuePropositionByRole[selectedRole];
