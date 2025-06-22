@@ -697,18 +697,27 @@
 
             // Default layout and title
             challengesContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4';
-            step4Title.textContent = 'Your Focus Areas';
+            step4Title.textContent = 'Your Challenges';
 
             if (isNewUserPath) {
                 let focusAreas = focusAreasByRole[selectedRole] || focusAreasByRole['default'];
-                
+                step4Title.textContent = 'Your Focus Areas';
                 if (selectedRole === 'avp') {
                     step4Title.textContent = 'Your Challenges';
                     challengesPrompt.innerHTML = "As a leader, your challenges are unique. Select the areas where you're facing the most pressure.";
                     challengesContainer.className = 'space-y-4';
-                    const avpFocusOrder = ['focus_avp_roi', 'focus_avp_data', 'focus_avp_reputation', 'focus_avp_risk', 'focus_avp_efficiency'];
+                    const avpFocusOrder = ['focus_avp_data', 'focus_avp_roi', 'focus_avp_risk', 'focus_avp_reputation', 'focus_avp_efficiency'];
                     focusAreas.sort((a, b) => avpFocusOrder.indexOf(a.id) - avpFocusOrder.indexOf(b.id));
 
+                    avpFocusOrder.forEach(focusId => {
+                        const area = focusAreas.find(a => a.id === focusId);
+                        if (area) {
+                             if (!isInternationalUser || !area.recommends.includes('ISSS')){
+                                challengesContainer.appendChild(createCheckbox(area.id, 'challenges', area.id, area.text));
+                             }
+                        }
+                    });
+                    return; // exit function after handling AVP case
                 } else {
                     challengesPrompt.innerHTML = "What are your primary objectives? <br/> <span class='text-sm text-slate-400'>Select one or more areas to see how Terra Dotta can help.</span>";
                 }
@@ -730,7 +739,6 @@
                     challengesContainer.appendChild(createCheckbox(point.id, 'challenges', point.id, point.text));
                 });
             } else {
-                step4Title.textContent = 'Your Challenges';
                 challengesPrompt.textContent = "Based on your role, what are your biggest challenges right now? Select all that apply.";
                 let challengesForRole = challengesByRole[selectedRole];
                 
